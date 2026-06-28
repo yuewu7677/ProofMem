@@ -1,0 +1,14 @@
+name = "ProofMem"
+version = "0.1.0"
+defaultTargets = ["proofmem"]
+
+[[require]]
+name = "mathlib"
+git = "https://github.com/leanprover-community/mathlib4"
+
+[[lean_lib]]
+name = "ProofMem"
+
+[[lean_exe]]
+name = "proofmem"
+root = "Main"
