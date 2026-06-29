@@ -54,8 +54,10 @@ theorem comm_of_self_inverse (h : ∀ x : G, x * x = 1) (a b : G) :
     _ = b⁻¹ * a⁻¹ := mul_inv_rev a b
     _ = b * a := by rw [inv_eq a, inv_eq b]
 
-/-- T10: practice question -/
-theorem prac_quest' (a b : G) (b^6 = 1) (a*b=b^4 *a ) :
-  b^3=1 := by sorry
-
+/-- T10 If two elements commute, the inverse of one also commutes with the other. -/
+theorem comm_inv (a b : G) (h : a * b = b * a) : a⁻¹ * b = b * a⁻¹ := by
+  calc a⁻¹ * b = a⁻¹ * b * a * a⁻¹ := by group
+    _ = a⁻¹ * (b * a) * a⁻¹ := by group
+    _ = a⁻¹ * (a * b) * a⁻¹ := by rw [h]
+    _ = b * a⁻¹ := by group
 end Smoke.GroupTheory
