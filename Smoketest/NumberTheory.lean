@@ -76,3 +76,4 @@ theorem dvd_linear_comb {d m n : ℕ} (hm : d ∣ m) (hn : d ∣ n) (x y : ℕ) 
   have h1 : d ∣ m * x := Dvd.dvd.mul_right hm x
   have h2 : d ∣ n * y := Dvd.dvd.mul_right hn y
   exact Dvd.dvd.add h1 h2
+end Smoke.NumberTheory
