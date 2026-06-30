@@ -61,24 +61,29 @@ A controlled **Lean 4** evaluation framework built on [mathlib4](https://github.
 ## Repository Structure
 
 ```
-├── MyProject/                  # Lean 4 library (core theorems)
+├── MyProject.lean               # Library root (imports MyProject.Basic)
+├── MyProject/
 │   └── Basic.lean
-├── Smoketest/                  # Theorem family smoke tests
-│   ├── GroupTheory.lean        # Group identities (inv, mul, etc.)
-│   ├── CyclicGroups.lean       # Cyclic group theorems
-│   └── NumberTheory.lean       # Elementary number theory
-├── Zhi-Chen/                   # Verification framework & experiments
-│   ├── test-lean/ProofMem/     # Lean project with test theorems
-│   │   └── ProofMem/
-│   │       ├── Basic.lean      # Verified theorems (correct)
-│   │       ├── Broken.lean     # Deliberately broken theorems
-│   │       └── playground.lean # Tactics tutorial / scratch pad
+├── Smoketest/                   # Theorem family smoke tests
+│   ├── GroupTheory.lean         # Group identities (inv, mul, etc.)
+│   ├── CyclicGroups.lean        # Cyclic group theorems
+│   └── NumberTheory.lean        # Elementary number theory
+├── Zhi-Chen/                    # Verification framework & experiments
+│   ├── test-lean/ProofMem/
+│   │   ├── ProofMem.lean        # Library root (imports Basic + Broken)
+│   │   ├── ProofMem/
+│   │   │   ├── Basic.lean       # Verified theorems (correct)
+│   │   │   ├── Broken.lean      # Deliberately broken theorems
+│   │   │   └── playground.lean  # Tactics tutorial / scratch pad
+│   │   ├── lakefile.toml
+│   │   ├── lake-manifest.json
+│   │   └── lean-toolchain
 │   └── verify/
-│       └── verify.py           # Automated proof checker
-├── lakefile.toml               # Lake build configuration
-├── lake-manifest.json          # Dependency versions
-├── lean-toolchain              # Lean version: v4.32.0-rc1
-└── .github/workflows/          # CI (lean-action + docgen)
+│       └── verify.py            # Automated proof checker
+├── lakefile.toml                # Lake build configuration (MyProject)
+├── lake-manifest.json           # Dependency versions
+├── lean-toolchain               # Lean version: v4.32.0-rc1
+└── .github/workflows/           # CI (lean-action)
 ```
 
 ## Setup
