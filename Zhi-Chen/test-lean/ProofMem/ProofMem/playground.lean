@@ -23,7 +23,8 @@ theorem am_bm_sq (a b : Nat) : (a + b) * (a + b) = a * a + 2 * a * b + b * b := 
   ring -- expand the equation and prove the equality
 
 -- induction - induction tactic - prove statements by mathematical induction
-theorem sum_of_odds_eq_square (n : Nat) : (Finset.sum (Finset.range n) (λ i => 2*i+1)) = n*n := by
+-- (See ProofMem/Basic.lean for the production version of this theorem.)
+example (n : Nat) : (Finset.sum (Finset.range n) (λ i => 2*i+1)) = n*n := by
   induction' n with k ih
   · rfl -- base case
   · simp [Finset.sum_range_succ, ih] -- induction step
