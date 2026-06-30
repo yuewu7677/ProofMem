@@ -134,6 +134,3 @@ python Zhi-Chen/verify/verify.py Zhi-Chen/test-lean/ProofMem/ProofMem/Broken.lea
 - [mathlib4](https://github.com/leanprover-community/mathlib4) — Lean 4 mathematical library
 - [Lean Action](https://github.com/leanprover/lean-action) — GitHub Actions for Lean CI
 
-## License
-
-MIT
