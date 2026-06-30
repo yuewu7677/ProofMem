@@ -1,118 +1,67 @@
-# Data Classification Rubric for Proof Behavior
+# Data Classification Rubric
 
-This document defines four evaluation categories for Lean proof data and gives concrete examples for each. It also describes feasible approaches to scale data generation.
+This document defines the current Lean proof-data categories and gives compact examples for each. A proof is valid only if Lean accepts it.
 
-## 1. Replay
+## Replay
 
-- **Definition:** The model is evaluated on the original theorem statements that were seen during training.
-- **Example:**
-  - Input theorem: `theorem pow_orderOf' (a : G) : a ^ orderOf a = 1 := by exact pow_orderOf_eq_one a`
-  - Evaluation: feed the exact theorem to the model and verify that Lean accepts the proof.
+- **Question:** Can the model prove an original theorem from the training set?
 - **Label:** `replay`
-- **Purpose:** establish a baseline that the model can solve the exact training examples.
-- **Important note:** This category is about input type, not verbatim proof output. The only requirement is that Lean verifies the theorem.
+- **Definition:** The theorem statement is unchanged from the original dataset.
+- **Example:** `theorem pow_orderOf' (a : G) : a ^ orderOf a = 1 := by ...`
+- **Success criterion:** Lean accepts the proof.
 
-## 2. Perturbation robustness
+## Theorem Perturbation
 
-- **Definition:** The model proves the same mathematical statement after superficial changes to syntax, naming, or presentation.
+- **Question:** Does the proof survive variable renaming or reordering?
+- **Label:** `theorem_perturbation`
+- **Definition:** The theorem keeps the same mathematical meaning, but its surface form changes.
 - **Example:**
-  - Base theorem: `theorem pow_orderOf' (a : G) : a ^ orderOf a = 1 := by exact pow_orderOf_eq_one a`
+  - Base theorem: `theorem pow_orderOf' (a : G) : a ^ orderOf a = 1 := by ...`
   - Perturbed theorem: `theorem pow_orderOf_renamed' (x : G) : 1 = x ^ orderOf x := by ...`
-  - Valid proof may be different, as long as it proves the equivalent statement.
-- **Label:** `perturbation`
-- **Purpose:** measure robustness to surface variation, not exact memorization.
-- **Common perturbations:**
-  - rename variables and hypotheses
-  - change the order of assumptions
-  - rewrite a goal in an equivalent form
-  - change connective order or use symmetric equality
+- **Common perturbations:** rename variables, reorder assumptions, reverse equalities, or rewrite goals into equivalent forms.
 
-## 3. Sibling transfer
+## Sibling-Theorem Transfer
 
-- **Definition:** The model proves a new but closely related theorem using the same underlying reasoning pattern.
+- **Question:** Can the same proof idea solve a different theorem statement?
+- **Label:** `sibling_theorem_transfer`
+- **Definition:** The theorem is new but closely related to a known theorem, usually within the same family.
 - **Example:**
   - Known theorem: `gcd_comm' (m n : ℕ) : Nat.gcd m n = Nat.gcd n m`
   - Sibling theorem: `gcd_assoc' (m n k : ℕ) : Nat.gcd (Nat.gcd m n) k = Nat.gcd m (Nat.gcd n k)`
-  - The proof should reuse the same style of reasoning about gcd properties, even if the statement is different.
-- **Label:** `sibling_transfer`
-- **Purpose:** measure generalization of proof ideas across related statements.
-- **What qualifies:**
-  - a different theorem, not a restatement
-  - same theorem family or proof strategy
-  - same domain, but new specific formula
+- **What qualifies:** a new statement with a related proof strategy in the same domain.
 
-## 4. Retention
+## Cross-Domain Retention
 
-- **Definition:** The model retains earlier proof knowledge after further training or domain transfer.
+- **Question:** Does proof knowledge decay across domains?
+- **Label:** `cross_domain_retention`
+- **Definition:** Earlier proof knowledge is evaluated after later training on a different mathematical domain.
 - **Example:**
-  - Pretraining set: group theory lemmas such as `mul_inv_rev'` and `inv_one'`
-  - Fine-tuning set: number theory lemmas such as `dvd_add'` and `gcd_dvd_left'`
-  - Retention evaluation: re-run the original group theory proofs and measure whether they still succeed.
-- **Label:** `retention`
-- **Purpose:** measure stability of proof knowledge after continued training.
-- **Typical setup:**
-  - train on initial family A
-  - fine-tune on family B
-  - evaluate again on family A
+  - Initial domain: group theory lemmas such as `mul_inv_rev'` and `inv_one'`
+  - Later domain: number theory lemmas such as `dvd_add'` and `gcd_dvd_left'`
+  - Evaluation: re-run the original-domain proofs after later-domain training and measure whether they still compile.
+- **Typical setup:** train on domain A, fine-tune on domain B, then evaluate again on domain A.
 
-## Why replay is limited
+## Summary
 
-- **Replay is not the main scientific target.** It measures exact recollection, not mathematical understanding.
-- **Most mathematicians do not value verbatim proofs.** They value proof ideas, structural reasoning, and the ability to adapt proofs to new statements.
-- **Usefulness of replay:** only as a baseline and as a check that the model has seen the training data.
-- **Not enough for evaluation:** if a model only wins on replay, it may simply memorize proof text rather than generalize.
-
-## Practical data-generation rubric
-
-| Category | Input type | Output expectation | Use case |
+| Category | Label | Input type | Success criterion |
 |---|---|---|---|
-| `replay` | original theorem | valid proof accepted by Lean | baseline verification |
-| `perturbation` | equivalent theorem with changed syntax | valid proof accepted by Lean | robustness to surface variation |
-| `sibling_transfer` | new, related theorem | valid proof accepted by Lean | transfer/generalization |
-| `retention` | original theorem after later training | valid proof still accepted by Lean | long-term stability |
+| Replay | `replay` | original theorem | Lean accepts the proof |
+| Theorem Perturbation | `theorem_perturbation` | equivalent theorem with changed syntax | Lean accepts the proof |
+| Sibling-Theorem Transfer | `sibling_theorem_transfer` | new related theorem | Lean accepts the proof |
+| Cross-Domain Retention | `cross_domain_retention` | original-domain theorem after different-domain training | Lean accepts the proof |
 
-## Feasible approaches to scale
+## Data Generation
 
-### A. Automated perturbations
-- generate variable renamings automatically
-- swap assumption order where semantics permit
-- rewrite goals using simple equivalences (e.g. `a = b` ⇔ `b = a`)
-- use parser-based transformations to avoid invalid Lean syntax
+- Generate perturbations with parser-aware variable renaming, assumption reordering, and equivalent goal rewrites.
+- Build sibling theorems from small theorem families such as group identities, cyclic-group powers, gcd, and divisibility.
+- Use mathlib lemmas as scaffolds, then verify generated examples with `lake build`.
+- For retention, define a sequence of training domains and evaluate earlier-domain proofs after each later-domain stage.
 
-### B. Template-based sibling generation
-- define theorem templates for family structure
-- instantiate templates with new names or new numeric constants
-- derive sibling statements from the same algebraic pattern
-- example families: group identities, cyclic group power facts, gcd/divisibility
+## Workflow
 
-### C. Use existing mathlib lemmas as scaffolds
-- extract small theorem families from mathlib or Smoke test files
-- create sibling variants by replacing one lemma call with a closely related lemma
-- generate proofs that rely on the same high-level strategy
-
-### D. Evaluate retention with training schedules
-- define a sequence of training domains
-- use original proofs as held-out retention evaluation examples
-- measure how many original proofs still compile after each training stage
-
-### E. Human-in-the-loop sanity checks
-- sample generated perturbations and sibling variants for correctness
-- ensure transformations preserve semantics
-- use Lean compilation as the final filter
-
-## Recommended workflow for the team
-
-1. select a small base set of theorems from each target family
-2. generate `replay` examples from the original proofs
-3. create `perturbation` variants automatically from those theorems
-4. build `sibling_transfer` examples using theorem templates and domain knowledge
-5. schedule retention evaluations after each additional fine-tuning stage
-6. verify all generated examples by running Lean on the resulting `.lean` files
-
-## Notes for implementation
-
-- Use Lean itself as the truth oracle: a proof is valid only if `lake build` succeeds.
-- Do not use exact script match as the main success criterion; the important signal is whether Lean accepts the theorem.
-- For `replay`, use the original statements as input and verify that the proof is accepted by Lean.
-- For `perturbation` and `sibling_transfer`, accept any proof that compiles and matches the intended theorem meaning.
-- For `retention`, measure degradation or stability over training stages rather than raw accuracy on new statements.
+1. Select a small base set of theorems from each target family.
+2. Keep the original statements as `replay` examples.
+3. Create `theorem_perturbation` variants from those theorems.
+4. Build `sibling_theorem_transfer` examples using theorem templates and domain knowledge.
+5. Schedule `cross_domain_retention` evaluations across training stages.
+6. Verify all generated `.lean` files with Lean.

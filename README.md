@@ -14,13 +14,13 @@
 
 ## Motivation
 
-Large language models are increasingly evaluated on mathematical reasoning, but it is still unclear whether they learn **reusable proof ideas** or mainly **memorize proof traces** from training data. This project studies whether models trained on formal theorem-proof pairs retain:
+Large language models are increasingly evaluated on mathematical reasoning, but it is still unclear whether they learn **reusable proof ideas** or mainly succeed on theorem statements seen during training. This project studies whether models trained on formal theorem-proof pairs retain:
 
-- Exact proof scripts (memorization)
+- Replay performance on original theorem statements
 - Reusable proof patterns (generalization)
 - Theorem-level reasoning under perturbation and later fine-tuning
 
-This connects to current concerns about benchmark contamination, proof memorization, and reliable evaluation of mathematical reasoning.
+This connects to current concerns about benchmark contamination and reliable evaluation of mathematical reasoning.
 
 ## Approach
 
@@ -28,7 +28,7 @@ A controlled **Lean 4** evaluation framework built on [mathlib4](https://github.
 
 | Level | Name | Description |
 |---|---|---|
-| L1 | Exact Proof Replay | Can the model reproduce the exact proof script? |
+| L1 | Replay | Can the model prove original theorem statements? |
 | L2 | Theorem Perturbation | Does it survive variable renaming / reordering? |
 | L3 | Sibling-Theorem Transfer | Same proof idea, different theorem statement |
 | L4 | Cross-Domain Retention | Does proof knowledge decay across domains? |
@@ -36,7 +36,6 @@ A controlled **Lean 4** evaluation framework built on [mathlib4](https://github.
 ### Metrics
 
 - Lean verification success rate (`lake build`)
-- Exact proof-script match
 - Proof-token log loss
 - Tactic edit distance
 - Retention curves after fine-tuning
@@ -44,7 +43,7 @@ A controlled **Lean 4** evaluation framework built on [mathlib4](https://github.
 ### Deliverables
 
 1. Clean Lean theorem-proof dataset with original, perturbed, and sibling-theorem splits
-2. Baseline results comparing exact replay vs. reusable proof patterns
+2. Baseline results comparing replay, perturbation, transfer, and retention
 3. Sequential fine-tuning experiments measuring cross-domain knowledge decay
 4. Draft paper targeting **ICLR 2027** (backup: NeurIPS 2027)
 
@@ -133,4 +132,3 @@ python Zhi-Chen/verify/verify.py Zhi-Chen/test-lean/ProofMem/ProofMem/Broken.lea
 - [LeanDojo](https://leandojo.org/) — Lean proof environment for ML
 - [mathlib4](https://github.com/leanprover-community/mathlib4) — Lean 4 mathematical library
 - [Lean Action](https://github.com/leanprover/lean-action) — GitHub Actions for Lean CI
-
