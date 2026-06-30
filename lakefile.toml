@@ -1,7 +1,7 @@
-name = "my_project"
+name = "Smoketest"
 version = "0.1.0"
 keywords = ["math"]
-defaultTargets = ["MyProject"]
+defaultTargets = ["Smoketest"]
 
 [leanOptions]
 pp.unicode.fun = true # pretty-prints `fun a ↦ b`
@@ -15,4 +15,4 @@ scope = "leanprover-community"
 rev = "v4.32.0-rc1"
 
 [[lean_lib]]
-name = "MyProject"
+name = "Smoketest"

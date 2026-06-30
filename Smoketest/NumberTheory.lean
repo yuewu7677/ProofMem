@@ -9,14 +9,7 @@ Difficulty key (by PROOF EFFORT, not topic):
   D1 = one tactic / one lemma citation (decide, simp, omega, exact <lemma>)
   D2 = short chain (2-4 steps) or one rewrite using a hypothesis
   D3 = genuine multi-step proof, no single library lemma closes it
-
-Lane: Nat and Int. Names here are more stable than the algebra files, but
-still VERIFY any flagged line with exact? on your Mathlib revision.
 -/
-
--- ============================================================
--- D1: facts closed by decide/omega/norm_num or one named lemma.
--- ============================================================
 
 /-- T01: divisibility is transitive [D1] [mathlib_analogue: dvd_trans] -/
 theorem dvd_trans' {a b c : ℕ} (h1 : a ∣ b) (h2 : b ∣ c) : a ∣ c := by
@@ -36,10 +29,6 @@ theorem seventeen_prime : Nat.Prime 17 := by decide
 theorem gcd_comm' (m n : ℕ) : Nat.gcd m n = Nat.gcd n m := by
   exact Nat.gcd_comm m n
 
--- ============================================================
--- D2: short chains / one hypothesis.
--- ============================================================
-
 /-- T06: if d divides both m and n, d divides their sum [D2].
     [mathlib_analogue: Dvd.dvd.add] -/
 theorem dvd_add' {d m n : ℕ} (hm : d ∣ m) (hn : d ∣ n) : d ∣ (m + n) := by
@@ -53,18 +42,14 @@ theorem gcd_dvd_left' (m n : ℕ) : Nat.gcd m n ∣ m := by
 theorem modEq_iff_dvd' (a b : ℤ) (n : ℤ) (h : a ≡ b [ZMOD n]) : n ∣ (b - a) := by
   exact Int.ModEq.dvd h
 
--- ============================================================
--- D3: genuine multi-step proofs, no single lemma closes them.
--- ============================================================
 
 /-- T09: if d divides m and d divides n, then d divides gcd m n [D3].
     VERIFY Nat.dvd_gcd. -/
-
 theorem dvd_gcd' {d m n : ℕ} (hm : d ∣ m) (hn : d ∣ n) : d ∣ Nat.gcd m n := by
   exact Nat.dvd_gcd hm hn
 
 /-- T10: if a prime p divides a*b then p divides a or p divides b [D3].
-    Euclid's lemma. VERIFY: Nat.Prime.dvd_mul direction with exact?. -/
+    Euclid's lemma.-/
 theorem prime_dvd_mul {p a b : ℕ} (hp : Nat.Prime p) (h : p ∣ a * b) :
     p ∣ a ∨ p ∣ b := by
   exact (Nat.Prime.dvd_mul hp).mp h

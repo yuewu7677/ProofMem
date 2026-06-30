@@ -42,7 +42,8 @@ theorem orderOf_dvd_card' [Fintype G] (a : G) : orderOf a ∣ Fintype.card G := 
 
 /-- T08: every cyclic group is abelian (commutative). -/
 theorem comm_of_isCyclic [IsCyclic G] (a b : G) : a * b = b * a := by
-  exact mul_comm a b
+  have : CommGroup G := IsCyclic.commGroup
+  exact mul_comm' a b
 
 /-- T09: powers of a fixed element commute with each other. -/
 theorem pow_comm (a : G) (m n : ℕ) : a ^ m * a ^ n = a ^ n * a ^ m := by

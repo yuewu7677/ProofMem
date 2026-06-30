@@ -61,29 +61,24 @@ A controlled **Lean 4** evaluation framework built on [mathlib4](https://github.
 ## Repository Structure
 
 ```
-├── MyProject.lean               # Library root (imports MyProject.Basic)
-├── MyProject/
-│   └── Basic.lean
-├── Smoketest/                   # Theorem family smoke tests
-│   ├── GroupTheory.lean         # Group identities (inv, mul, etc.)
-│   ├── CyclicGroups.lean        # Cyclic group theorems
-│   └── NumberTheory.lean        # Elementary number theory
-├── Zhi-Chen/                    # Verification framework & experiments
-│   ├── test-lean/ProofMem/
-│   │   ├── ProofMem.lean        # Library root (imports Basic + Broken)
-│   │   ├── ProofMem/
-│   │   │   ├── Basic.lean       # Verified theorems (correct)
-│   │   │   ├── Broken.lean      # Deliberately broken theorems
-│   │   │   └── playground.lean  # Tactics tutorial / scratch pad
-│   │   ├── lakefile.toml
-│   │   ├── lake-manifest.json
-│   │   └── lean-toolchain
+├── Smoketest/                  # Theorem family smoke tests
+│   ├── GroupTheory.lean        # Group identities (inv, mul, cancellation)
+│   ├── CyclicGroups.lean       # Cyclic group / power / orderOf theorems
+│   └── NumberTheory.lean       # Divisibility, gcd, primes, modular arithmetic
+├── Smoketest.lean              # Library root (imports the three files above)
+├── Zhi-Chen/                   # Verification framework & experiments
+│   ├── test-lean/ProofMem/     # Lean project with test theorems
+│   │   └── ProofMem/
+│   │       ├── Basic.lean      # Verified theorems (correct)
+│   │       ├── Broken.lean     # Deliberately broken theorems
+│   │       └── playground.lean # Tactics tutorial / scratch pad
 │   └── verify/
-│       └── verify.py            # Automated proof checker
-├── lakefile.toml                # Lake build configuration (MyProject)
-├── lake-manifest.json           # Dependency versions
-├── lean-toolchain               # Lean version: v4.32.0-rc1
-└── .github/workflows/           # CI (lean-action)
+│       └── verify.py           # Automated proof checker
+├── lakefile.toml               # Lake build configuration (library: Smoketest)
+├── lake-manifest.json          # Dependency versions (pins Mathlib)
+├── lean-toolchain              # Lean version: v4.32.0-rc1
+├── README.md                   # This file
+└── .github/workflows/          # CI (lean-action + release + docgen)
 ```
 
 ## Setup
