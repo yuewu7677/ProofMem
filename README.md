@@ -7,9 +7,9 @@
 ## Team
 
 | Name | GitHub | Email |
-|---|---|---|---|
+|---|---|---|
 | Yue Wu | [yuewu7677](https://github.com/yuewu7677) | yuew29@uw.edu |
-| Zhi Chen | [Chiyoru7D7](https://github.com/Chiyoru7D7) | jichan7a@gmail.com | 
+| Zhi Chen | [Chiyoru7D7](https://github.com/Chiyoru7D7) | jichan7a@gmail.com |
 | Jayme Kim | [hyungoo-1](https://github.com/hyungoo-1) | hyungoo@uw.edu |
 
 ## Motivation
