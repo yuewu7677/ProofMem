@@ -4,13 +4,13 @@ This document defines four evaluation categories for Lean proof data and gives c
 
 ## 1. Replay
 
-- **Definition:** The model reproduces the original proof script or proof trace for an exact theorem statement.
+- **Definition:** The model is evaluated on the original theorem statements that were seen during training.
 - **Example:**
   - Input theorem: `theorem pow_orderOf' (a : G) : a ^ orderOf a = 1 := by exact pow_orderOf_eq_one a`
-  - Expected model output: the same Lean proof `by exact pow_orderOf_eq_one a`.
+  - Evaluation: feed the exact theorem to the model and verify that Lean accepts the proof.
 - **Label:** `replay`
-- **Purpose:** measure whether the model can memorize and recall specific proof text.
-- **When to use:** as a baseline to establish that the model can at least reproduce training examples.
+- **Purpose:** establish a baseline that the model can solve the exact training examples.
+- **Important note:** This category is about input type, not verbatim proof output. The only requirement is that Lean verifies the theorem.
 
 ## 2. Perturbation robustness
 
@@ -66,10 +66,10 @@ This document defines four evaluation categories for Lean proof data and gives c
 
 | Category | Input type | Output expectation | Use case |
 |---|---|---|---|
-| `replay` | original theorem | exact original proof | memorize baseline |
-| `perturbation` | equivalent theorem with changed syntax | any valid proof | robustness to surface variation |
-| `sibling_transfer` | new, related theorem | valid proof using same idea | transfer/generalization |
-| `retention` | original theorem after later training | valid proof still succeeds | long-term stability |
+| `replay` | original theorem | valid proof accepted by Lean | baseline verification |
+| `perturbation` | equivalent theorem with changed syntax | valid proof accepted by Lean | robustness to surface variation |
+| `sibling_transfer` | new, related theorem | valid proof accepted by Lean | transfer/generalization |
+| `retention` | original theorem after later training | valid proof still accepted by Lean | long-term stability |
 
 ## Feasible approaches to scale
 
@@ -112,6 +112,7 @@ This document defines four evaluation categories for Lean proof data and gives c
 ## Notes for implementation
 
 - Use Lean itself as the truth oracle: a proof is valid only if `lake build` succeeds.
-- Do not use exact script match as the main success criterion except for the `replay` baseline.
+- Do not use exact script match as the main success criterion; the important signal is whether Lean accepts the theorem.
+- For `replay`, use the original statements as input and verify that the proof is accepted by Lean.
 - For `perturbation` and `sibling_transfer`, accept any proof that compiles and matches the intended theorem meaning.
 - For `retention`, measure degradation or stability over training stages rather than raw accuracy on new statements.
