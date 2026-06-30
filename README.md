@@ -31,7 +31,7 @@ A controlled **Lean 4** evaluation framework built on [mathlib4](https://github.
 | L1 | Replay | Can the model prove original theorem statements? |
 | L2 | Theorem Perturbation | Does it survive variable renaming / reordering? |
 | L3 | Sibling-Theorem Transfer | Same proof idea, different theorem statement |
-| L4 | Cross-Domain Retention | Does proof knowledge decay across domains? |
+| L4 | Cross-Domain Generalization | Does proof knowledge generalize across domains? |
 
 ### Metrics
 
