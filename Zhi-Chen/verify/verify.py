@@ -464,9 +464,9 @@ def main():
         print("  --batch       Force batch mode (default when >1 file or directory).")
         print()
         print("Examples:")
-        print("  python verify.py ProofMem/Basic.lean")
-        print("  python verify.py ProofMem/Basic.lean ProofMem/Broken.lean --json")
-        print("  python verify.py ProofMem/ --json")
+        print("  python verify.py Smoketest/GroupTheory.lean")
+        print("  python verify.py Smoketest/GroupTheory.lean Smoketest/CyclicGroups.lean")
+        print("  python verify.py Smoketest/ --json")
         sys.exit(0)
 
     # Separate flags from file/dir arguments

@@ -114,18 +114,25 @@ lake build
 ### Verify Proofs
 
 ```bash
-# Single file
-python Zhi-Chen/verify/verify.py MyProject/Basic.lean
+# Optional first run: fetch cached mathlib artifacts and build with visible progress.
+lake exe cache get
+lake build Smoketest
+
+# Entire Smoketest directory
+python3 Zhi-Chen/verify/verify.py Smoketest/
+
+# Single Smoketest file
+python3 Zhi-Chen/verify/verify.py Smoketest/GroupTheory.lean
 
 # Batch mode (one lake build for N files)
-python Zhi-Chen/verify/verify.py Smoketest/GroupTheory.lean Smoketest/CyclicGroups.lean
-
-# Entire directory
-python Zhi-Chen/verify/verify.py Smoketest/
+python3 Zhi-Chen/verify/verify.py Smoketest/GroupTheory.lean Smoketest/CyclicGroups.lean Smoketest/NumberTheory.lean
 
 # JSON output
-python Zhi-Chen/verify/verify.py Zhi-Chen/test-lean/ProofMem/ProofMem/Broken.lean --json
+python3 Zhi-Chen/verify/verify.py Smoketest/ --json
 ```
+
+The verifier runs `lake build` internally and captures its output, so it may
+look idle until Lean finishes building.
 
 ## Related Work
 
