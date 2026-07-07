@@ -1,0 +1,36 @@
+{
+  "families": [
+    "bernoulli_distribution",
+    "binomial_distribution",
+    "conditional_independence",
+    "conditional_probability",
+    "covariance",
+    "exponential_distribution",
+    "gaussian_distribution",
+    "identical_distribution",
+    "independence",
+    "independence_integration",
+    "kernel_comp_prod",
+    "kernel_composition",
+    "kernel_density",
+    "laws_of_random_variables",
+    "markov_kernels",
+    "martingales",
+    "moments",
+    "optional_stopping",
+    "poisson_distribution",
+    "subgaussian",
+    "variance"
+  ],
+  "l1_l3_verification": "#check selected source declarations after importing Mathlib",
+  "l2_verification": "compile alpha-renamed declarations inserted into copies of their original mathlib source files",
+  "lean_version": "leanprover/lean4:v4.32.0-rc1",
+  "levels": {
+    "L1": 100,
+    "L2": 100,
+    "L3": 100
+  },
+  "mathlib_version": "v4.32.0-rc1",
+  "note": "L3 source declarations are disjoint from L1 and selected from the same probability families; logical inequivalence still needs semantic audit for publication-grade labels.",
+  "total_records": 300
+}
