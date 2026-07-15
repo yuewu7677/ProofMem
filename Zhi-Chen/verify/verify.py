@@ -64,7 +64,7 @@ def run_lake_build(project_dir: str) -> tuple[bool, str, str]:
         cwd=project_dir,
         capture_output=True,
         env=env,
-        timeout=600,  # 10 min — mathlib is big
+        timeout=6000,  # 10 min — mathlib is big
     )
     stdout = result.stdout.decode('utf-8', errors='replace')
     stderr = result.stderr.decode('utf-8', errors='replace')
