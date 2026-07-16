@@ -1,0 +1,11 @@
+import Smoketest.Manual.MonotoneConvergence
+import Smoketest.Manual.BayesTheorem
+import Smoketest.Manual.BorelCantelli
+import Smoketest.Manual.MarkovInequality
+import Smoketest.Manual.Inequalities
+import Smoketest.Manual.WeakLawLargeNumbers
+import Smoketest.Manual.ConvexExpectation
+import Smoketest.Manual.Independence
+import Smoketest.Manual.ConditionalExpectation
+import Smoketest.Manual.MartingaleBasic
+import Smoketest.Manual.IdentDistrib
