@@ -1,12 +1,12 @@
 # Data Classification Rubric for Proof Knowledge Levels
 
-This document rigorously defines four proof knowledge levels (L1–L4) used to classify evaluation instances in formal theorem proving. These levels characterize the relationship between evaluation theorems and training data, focusing on measurable criteria rather than subjective proof quality.
+This document defines the Lean-oriented implementation of four proof knowledge levels (L1–L4). The corresponding natural-language protocol is specified in `docs/experiment1_natural_language.md`. Both protocols use one target fine-tuning intervention; L4 measures far transfer rather than sequential retention.
 
 ---
 
 ## L1. Replay
 
-### Goal  
+### Goal
 Evaluate the model’s ability to reproduce proofs for exact theorem statements seen during training.
 
 ### Formal definition  
@@ -128,43 +128,50 @@ Evaluate the model’s ability to generalize proof ideas to new but related theo
 
 ---
 
-## L4. Cross-Domain Retention
+## L4. Cross-Domain Proof-Pattern Transfer
 
 ### Goal  
-Measure how well proof knowledge from an initial domain is retained after training on a disjoint domain.
+Measure whether a proof schema learned from L1 examples transfers to a new theorem in a different mathematical domain.
 
-### Formal definition  
-- Training proceeds sequentially: first domain A, then domain B.  
-- Domains A and B are *disjoint* by namespace and dependency thresholds.  
-- Evaluate the model on domain A theorems *after* training on domain B.
+### Formal definition
+- The L4 evaluation theorem comes from a domain different from its L1 parent.
+- It is not logically equivalent to the L1 theorem.
+- It requires an explicitly documented abstract proof schema also used by the L1 proof.
+- The evaluated model receives no additional fine-tuning after the L1 intervention.
 
-### Inclusion criteria (measurable)  
-- Domains A and B have no overlapping namespaces or minimal dependency overlap.  
-- Theorems from domain A are evaluated before and after domain B training.  
-- Proofs are Lean-verified.
+### Inclusion criteria (measurable)
+- The L1 and L4 records have distinct domains under the declared domain taxonomy.
+- Human auditors confirm that the shared proof schema is substantive rather than a generic tactic label.
+- The L4 statement and hidden reference proof are Lean-verified.
+- The original and once-fine-tuned checkpoints are evaluated under the same inference protocol.
 
-### Exclusion criteria  
-- Domains with significant overlap in namespaces or dependencies.  
+### Exclusion criteria
+- Arbitrary out-of-domain theorems with no documented shared proof schema.
+- Mathematically equivalent restatements of L1 theorems.
+- Theorems whose only relationship is topic, namespace, or use of a generic automation tactic.
 - Theorems not verified by Lean.
 
-### Automatic generation procedure  
-- Partition the corpus into disjoint domains by namespace and dependency graph analysis.  
-- Train sequentially on domain A then domain B.  
-- Evaluate on domain A test set before and after domain B training.
+### Automatic generation procedure
+- Identify proof schemas represented in the L1 proofs.
+- Search a disjoint domain for theorems requiring one of those schemas.
+- Pair each L4 theorem with a specific L1 parent and record the shared schema.
+- Verify the theorem, proof, domain distinction, and schema relationship.
+- Evaluate both the original and once-fine-tuned checkpoints on the L4 statement.
 
-### Human verification checklist  
-- Confirm domain disjointness.  
-- Confirm Lean verification of proofs at both stages.
+### Human verification checklist
+- Confirm the domain distinction and mathematical novelty.
+- Confirm that the stated proof schema occurs substantively in both proofs.
+- Confirm Lean verification of the hidden L4 reference proof.
 
-### Metrics  
-- Retention = pass rate on domain A after domain B training / pass rate before domain B training  
-- Forgetting = pass rate before - pass rate after  
-- Forward transfer on domain B = pass rate on B after training / baseline on B before training
+### Metrics
+- Far-transfer gain = pass rate on L4 after L1 fine-tuning - base-model pass rate on L4
+- Control-adjusted far-transfer effect = target-training gain - matched-control-training gain
+- Far-transfer ratio = control-adjusted L4 effect / control-adjusted L1 replay effect, when the denominator is positive
 
-### Example  
-- Domain A: group theory lemmas such as `mul_inv_rev'` and `inv_one'`  
-- Domain B: number theory lemmas such as `dvd_add'` and `gcd_dvd_left'`  
-- Evaluate group theory proofs after number theory fine-tuning.
+### Example
+- L1 domain: number theory theorem proved by induction on a natural-number parameter.
+- L4 domain: graph theory theorem whose proof uses the same induction schema.
+- Fine-tune once on the L1 theorem-proof pair and evaluate the L4 theorem before and after that intervention.
 
 ---
 
@@ -175,7 +182,7 @@ Measure how well proof knowledge from an initial domain is retained after traini
 3. Cluster theorems into families using dependency graphs and namespaces.  
 4. Generate L2 perturbations automatically from L1 theorems using syntax transformations.  
 5. Generate L3 sibling theorems by exploring theorem-family graphs and tactic signatures.  
-6. Split the corpus into disjoint domains for L4 evaluation based on namespaces and dependency thresholds.  
+6. Pair L4 theorems across domains using audited shared proof schemas.
 7. Run Lean verification on all generated proofs to ensure correctness.  
 8. Assign rich metadata for tracking provenance, transformations, and verification status.
 
@@ -207,7 +214,7 @@ verified            # Boolean indicating Lean verification success
 | L1    | Exact match to training theorem  | Proof for exact statement        | Yes        | Confirm statement identity and proof correctness | pass@k, proof length, time    |
 | L2    | Mathematically equivalent variant | Proof valid for perturbed statement | Yes        | Confirm semantic equivalence and proof correctness | Perturbation robustness       |
 | L3    | New theorem in same family       | Proof reuses major proof ingredients | Partially  | Confirm novelty and strategy overlap | Sibling transfer rate         |
-| L4    | Disjoint domain theorem          | Proof retention after domain shift | Partially  | Confirm domain disjointness and verification | Retention, forgetting, forward transfer |
+| L4    | New theorem in a different domain | Reuses an abstract proof schema from L1 | Partially | Confirm domain distinction, schema overlap, and proof correctness | Control-adjusted far-transfer effect |
 
 ---
 
@@ -251,7 +258,7 @@ The table below is a planning table. Published numbers should be treated as exte
 | Lean Workbook | 2024-06 | broad Lean 4 natural-language-to-formalized math problems; many contest/undergraduate-style tasks | about 57,000 statements; about 5,000 with formal solutions | useful scale; not ideal as a clean graduate benchmark | Candidate pool for theorem-proof pairs and perturbation generation, not the core final benchmark |
 | FATE-H | 2025-11 | honors-undergraduate / graduate abstract and commutative algebra | 100 | Seed-Prover 1.5 reports 80%; earlier/open models may be much lower | Algebra slice only; too narrow to be the whole project |
 | FATE-X | 2025-11 | advanced PhD-level algebra, including problems beyond current library coverage | 100 | Seed-Prover 1.5 reports 33%; earlier/open models may be near zero | Stretch algebra set; probably too hard as the first main slice |
-| LeanCat | 2025-12 / 2026-02 version | category theory; graduate-level abstraction | 100 | public reports for frontier/API models are low-to-moderate depending on budget | Good second-domain retention slice if public files and harness fit our Lean setup |
+| LeanCat | 2025-12 / 2026-02 version | category theory; graduate-level abstraction | 100 | public reports for frontier/API models are low-to-moderate depending on budget | Possible far-transfer domain if theorem families share an audited proof schema with L1 |
 | ArXivLean | 2026-04 for the 03/2026 set | research-level statements from recent arXiv papers | 41 in the March 2026 set | MathArena lists top public leaderboard around the 30% range for AlephProver | Excellent external research-level evaluation; too small for main training |
 | PutnamBench | 2024, updated | hard undergraduate competition mathematics | 672 Lean 4 problems on the benchmark site | DeepSeek-Prover-V2 reports 49 solved on a Lean 4 subset; later systems report much higher | Calibration/stress test, not graduate/research-level enough by itself |
 | CombiBench | 2025-05 | combinatorics; mixed difficulty from school to university/olympiad | 100 | Kimina-Prover reports 7/100 in both with-solution and without-solution settings | Optional combinatorics OOD slice |
@@ -267,14 +274,14 @@ Do not use one dataset as the whole project. Use a multi-domain benchmark suite 
 3. **Training/replay source:** Lean Workbook and LEAN-GitHub-style corpora for theorem-proof pairs, because ProofMem needs verified proof scripts for L1 replay.  
 4. **Calibration/stress tests:** PutnamBench and CombiBench.
 
-The first concrete experiment should be:
+The first concrete Lean experiment (Experiment 2) should be:
 
 - choose a strong open Lean prover as the base model;  
 - run it on the candidate pool;  
 - keep examples whose initial correctness falls in the target band;  
 - use the verified successful proofs as L1 replay examples;  
 - generate L2 perturbations and L3 siblings only for examples that pass the Lean checker;  
-- evaluate L4 retention by training or adapting across domains.
+- construct L4 pairs only when the cross-domain theorems share an audited proof schema.
 
 ---
 

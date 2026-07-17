@@ -1,6 +1,6 @@
 # ProofMem
 
-**Separating Proof Replay from Proof-Pattern Generalization in Lean Theorem Proving**
+**Separating Proof Replay from Proof-Pattern Generalization in Mathematical Language Models**
 
 [![Lean Action CI](https://github.com/yuewu7677/ProofMem/actions/workflows/lean_action_ci.yml/badge.svg)](https://github.com/yuewu7677/ProofMem/actions/workflows/lean_action_ci.yml)
 
@@ -14,37 +14,39 @@
 
 ## Motivation
 
-Large language models are increasingly evaluated on mathematical reasoning, but it is still unclear whether they learn **reusable proof ideas** or mainly succeed on theorem statements seen during training. This project studies whether models trained on formal theorem-proof pairs retain:
+Large language models are increasingly evaluated on mathematical reasoning, but it is still unclear whether they learn **reusable proof ideas** or mainly succeed on theorem statements seen during training. This project studies whether models trained on theorem-proof pairs acquire:
 
 - Replay performance on original theorem statements
 - Reusable proof patterns (generalization)
-- Theorem-level reasoning under perturbation and later fine-tuning
+- Theorem-level reasoning that survives increasing transfer distance
 
 This connects to current concerns about benchmark contamination and reliable evaluation of mathematical reasoning.
 
 ## Approach
 
-A controlled **Lean 4** evaluation framework built on [mathlib4](https://github.com/leanprover-community/mathlib4) that distinguishes **four levels** of proof knowledge:
+A controlled two-experiment study compares natural-language proof behavior with Lean-verified proof behavior. Both experiments use one target fine-tuning intervention and distinguish **four levels** of proof knowledge:
 
 | Level | Name | Description |
 |---|---|---|
 | L1 | Replay | Can the model prove original theorem statements? |
-| L2 | Theorem Perturbation | Does it survive variable renaming / reordering? |
-| L3 | Sibling-Theorem Transfer | Same proof idea, different theorem statement |
-| L4 | Cross-Domain Generalization | Does proof knowledge generalize across domains? |
+| L2 | Semantic Invariance | Does proof knowledge survive a meaning-preserving restatement? |
+| L3 | Near Transfer | Does the same proof idea transfer to a new theorem in the same family? |
+| L4 | Far Transfer | Does a shared proof schema transfer across mathematical domains? |
+
+The complete pipeline is specified in [ProofMem End-to-End Experimental Design](docs/end_to_end_experimental_design.md), covering data generation, Experiment 1, and Lean-backed Experiment 2. The natural-language portion is also documented in greater detail in [Experiment 1: Natural-Language Proof Replay and Transfer](docs/experiment1_natural_language.md).
 
 ### Metrics
 
+- Human-calibrated natural-language proof correctness
+- Verifier-accepted natural-language proof rate
 - Lean verification success rate (`lake build`)
-- Proof-token log loss
-- Tactic edit distance
-- Retention curves after fine-tuning
+- Control-adjusted pre/post fine-tuning effects by transfer level
 
 ### Deliverables
 
-1. Clean Lean theorem-proof dataset with original, perturbed, and sibling-theorem splits
-2. Baseline results comparing replay, perturbation, transfer, and retention
-3. Sequential fine-tuning experiments measuring cross-domain knowledge decay
+1. Audited natural-language and Lean theorem-family datasets with replay and transfer splits
+2. Baseline results comparing exact replay, semantic invariance, near transfer, and far transfer
+3. A controlled one-intervention fine-tuning study with matched training controls
 4. Draft paper targeting **ICLR 2027** (backup: NeurIPS 2027)
 
 ## Timeline
@@ -53,7 +55,7 @@ A controlled **Lean 4** evaluation framework built on [mathlib4](https://github.
 |---|---|---|
 | Setup | June 2026 | Learn Lean, set up mathlib4 + LeanDojo, proof-checking pipeline |
 | Dataset | July 2026 | First theorem family dataset, perturbation splits, pilot experiments |
-| Transfer | Aug 2026 | Sibling-theorem transfer, sequential fine-tuning, anchored training |
+| Transfer | Aug 2026 | Sibling and cross-domain transfer, matched-control training |
 | Writing | Early Sept 2026 | Full paper draft, clean experiments, figures |
 | Submit | Mid-Late Sept 2026 | Target ICLR 2027 |
 
@@ -73,6 +75,9 @@ A controlled **Lean 4** evaluation framework built on [mathlib4](https://github.
 │   │       └── playground.lean # Tactics tutorial / scratch pad
 │   └── verify/
 │       └── verify.py           # Automated proof checker
+├── docs/
+│   ├── end_to_end_experimental_design.md # Full data and experiment pipeline
+│   └── experiment1_natural_language.md   # Natural-language experiment protocol
 ├── lakefile.toml               # Lake build configuration (library: Smoketest)
 ├── lake-manifest.json          # Dependency versions (pins Mathlib)
 ├── lean-toolchain              # Lean version: v4.32.0-rc1
