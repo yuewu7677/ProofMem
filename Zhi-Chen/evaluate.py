@@ -14,6 +14,8 @@ Supports:
   --offset N      Skip first N problems
   --domain D      Filter by domain
   --level L       Filter by level (L1, L2, L3)
+  --restricted    Use restricted imports in prompts + audit proofs after
+  --restricted-cache PATH  Path to restricted_imports.json
 
 Output:
   runs/<timestamp>/results.jsonl  — per-sample results
@@ -133,27 +135,51 @@ def extract_gold_proof(gold_fs: str) -> str | None:
 # Model interaction
 # ---------------------------------------------------------------------------
 
-def build_prompt(entry: dict[str, Any]) -> str:
-    """Build prompt for the model from a DATA_1 entry."""
+def build_prompt(
+    entry: dict[str, Any],
+    restricted_imports: list[str] | None = None,
+) -> str:
+    """Build prompt for the model from a DATA_1 entry.
+
+    If restricted_imports is provided, show only those imports.
+    """
     header = entry["formal_statement"]
     header = re.sub(r":=\s*by\s*\n\s*sorry\s*$", "", header.strip()).rstrip()
 
     domain = entry.get("domain", "Unknown")
     informal = entry.get("informal_statement", "")
 
-    prompt = (
-        "You are an expert in Lean 4 and mathematics. "
-        "Prove the following theorem.\n\n"
-        f"Domain: {domain}\n"
-    )
-    if informal:
-        prompt += f"Informal description: {informal}\n"
-    prompt += (
-        "\n"
-        "Return ONLY the Lean proof (starting with `by`), nothing else. "
-        "Do not include the theorem statement, imports, or any explanation.\n\n"
-        f"```lean4\n{header} := by\n```"
-    )
+    if restricted_imports is not None:
+        import_block = "\n".join(f"import {imp}" for imp in sorted(restricted_imports))
+        prompt = (
+            "You are an expert in Lean 4 and mathematics. "
+            "Prove the following theorem using ONLY the lemmas and definitions "
+            "available from the listed imports. Do not use any theorem or lemma "
+            "outside these imports.\n\n"
+            f"Domain: {domain}\n"
+        )
+        if informal:
+            prompt += f"Informal description: {informal}\n"
+        prompt += (
+            f"\nAvailable imports:\n```lean4\n{import_block}\n```\n\n"
+            "Return ONLY the Lean proof (starting with `by`), nothing else. "
+            "Do not include the theorem statement, imports, or any explanation.\n\n"
+            f"```lean4\n{header} := by\n```"
+        )
+    else:
+        prompt = (
+            "You are an expert in Lean 4 and mathematics. "
+            "Prove the following theorem.\n\n"
+            f"Domain: {domain}\n"
+        )
+        if informal:
+            prompt += f"Informal description: {informal}\n"
+        prompt += (
+            "\n"
+            "Return ONLY the Lean proof (starting with `by`), nothing else. "
+            "Do not include the theorem statement, imports, or any explanation.\n\n"
+            f"```lean4\n{header} := by\n```"
+        )
     return prompt
 
 
@@ -429,8 +455,12 @@ def evaluate(
     request_timeout: float = 600,
     lean_timeout: float = 600,
     pass_k: int = 1,
+    restricted_imports: dict[str, list[str]] | None = None,
 ) -> list[dict[str, Any]]:
-    """Evaluate entries and return results."""
+    """Evaluate entries and return results.
+
+    If restricted_imports is provided, use restricted prompts and audit proofs.
+    """
     all_results = []
 
     # Phase 1: Generate all proofs (model or gold)
@@ -439,6 +469,9 @@ def evaluate(
     count = 0
 
     for entry in entries:
+        eid = entry["id"]
+        entry_imports = restricted_imports.get(eid) if restricted_imports else None
+
         for sample_idx in range(pass_k):
             count += 1
             eval_name = f"eval_{_sanitize_name(entry['id'])}_{sample_idx}"
@@ -461,7 +494,7 @@ def evaluate(
                 messages = [
                     {"role": "system",
                      "content": "You are an expert in mathematics and Lean 4 theorem proving."},
-                    {"role": "user", "content": build_prompt(entry)},
+                    {"role": "user", "content": build_prompt(entry, entry_imports)},
                 ]
                 started = time.time()
                 try:
@@ -494,6 +527,7 @@ def evaluate(
                 "verified": None,  # to be filled
                 "error": "",
                 "latency_s": latency,
+                "proof_text": proof,  # stored for audit
             })
 
     if not eval_items:
@@ -522,6 +556,30 @@ def evaluate(
         status = "PASS" if r["verified"] else "FAIL"
         print(f"  {r['id']}_s{r['sample']} {status}", flush=True)
 
+    # Phase 4: Audit restricted proofs (if restricted mode)
+    if restricted_imports:
+        print(f"\nAuditing proofs against restricted imports...", flush=True)
+        try:
+            from restricted_env import audit_proof, load_index
+
+            idx = load_index()
+            for r in all_results:
+                eid = r["id"]
+                allowed = restricted_imports.get(eid, [])
+                proof = r.get("proof_text", "")
+                if r["verified"] and proof and allowed:
+                    clean, violations = audit_proof(proof, allowed, idx)
+                    r["restricted_clean"] = clean
+                    r["restricted_violations"] = violations[:10]  # cap at 10
+                else:
+                    r["restricted_clean"] = False
+                    r["restricted_violations"] = []
+        except ImportError:
+            print("  WARNING: restricted_env module not found, skipping audit")
+            for r in all_results:
+                r["restricted_clean"] = None
+                r["restricted_violations"] = []
+
     return all_results
 
 
@@ -530,22 +588,41 @@ def evaluate(
 # ---------------------------------------------------------------------------
 
 def compute_metrics(results: list[dict[str, Any]], pass_k: int) -> dict[str, Any]:
-    """Compute pass@1 and pass@k from results."""
+    """Compute pass@1 and pass@k from results, plus restricted metrics if available."""
     by_id: dict[str, list[bool]] = {}
+    by_id_restricted: dict[str, list[bool]] = {}
+    has_restricted = any("restricted_clean" in r for r in results)
+
     for r in results:
         by_id.setdefault(r["id"], []).append(r["verified"])
+        if has_restricted:
+            rc = r.get("restricted_clean", False)
+            by_id_restricted.setdefault(r["id"], []).append(rc is True)
 
     n = len(by_id)
     pass1 = sum(1 for v in by_id.values() if any(v[:1])) / n if n else 0
     passk = sum(1 for v in by_id.values() if any(v)) / n if n else 0
 
-    return {
+    metrics = {
         "total_problems": n,
         "total_samples": len(results),
         "pass@1": pass1,
         f"pass@{pass_k}": passk,
         "verified_count": sum(1 for r in results if r["verified"]),
     }
+
+    if has_restricted:
+        n_r = len(by_id_restricted)
+        pass1_r = sum(1 for v in by_id_restricted.values() if any(v[:1])) / n_r if n_r else 0
+        metrics["pass@1_restricted"] = pass1_r
+        metrics["restricted_clean_count"] = sum(
+            1 for r in results if r.get("restricted_clean") is True
+        )
+        # Violation stats
+        total_viol = sum(len(r.get("restricted_violations", [])) for r in results)
+        metrics["total_violations"] = total_viol
+
+    return metrics
 
 
 # ---------------------------------------------------------------------------
@@ -592,6 +669,11 @@ def main() -> int:
     parser.add_argument("--lean-timeout", type=float, default=600)
     parser.add_argument("--pass-k", type=int, default=1)
     parser.add_argument("--gold", action="store_true")
+    parser.add_argument("--restricted", action="store_true",
+                        help="Use restricted imports in prompts + audit proofs")
+    parser.add_argument("--restricted-cache", type=Path,
+                        default=Path(__file__).resolve().parent / "restricted_imports.json",
+                        help="Path to restricted_imports.json cache")
     parser.add_argument("--domain", type=str, default=None)
     parser.add_argument("--level", type=str, default=None)
     args = parser.parse_args()
@@ -627,6 +709,17 @@ def main() -> int:
         gold_proofs = load_gold_proofs(args.data2)
         print(f"  Gold proofs loaded: {len(gold_proofs)} entries")
 
+    # Load restricted imports if requested
+    restricted_imports = None
+    if args.restricted:
+        cache_path = args.restricted_cache
+        if cache_path.exists():
+            restricted_imports = json.loads(cache_path.read_text(encoding="utf-8"))
+            print(f"  Restricted imports loaded: {len(restricted_imports)} entries from {cache_path}")
+        else:
+            print(f"  WARNING: Restricted cache not found at {cache_path}")
+            print(f"  Run: python Zhi-Chen/restricted_env.py --analyze")
+
     started = time.time()
     results = evaluate(
         entries,
@@ -640,6 +733,7 @@ def main() -> int:
         request_timeout=args.request_timeout,
         lean_timeout=args.lean_timeout,
         pass_k=args.pass_k,
+        restricted_imports=restricted_imports,
     )
     elapsed = time.time() - started
 
@@ -651,6 +745,7 @@ def main() -> int:
         "pass_k": args.pass_k,
         "domain_filter": args.domain,
         "level_filter": args.level,
+        "restricted": args.restricted,
         "elapsed_s": elapsed,
         **metrics,
     }
@@ -665,6 +760,10 @@ def main() -> int:
     print(f"  pass@1:      {metrics['pass@1']:.2%}")
     if args.pass_k > 1:
         print(f"  pass@{args.pass_k}:    {metrics[f'pass@{args.pass_k}']:.2%}")
+    if args.restricted:
+        print(f"  pass@1 (restricted): {metrics.get('pass@1_restricted', 0):.2%}")
+        print(f"  Clean proofs:  {metrics.get('restricted_clean_count', 0)}")
+        print(f"  Violations:    {metrics.get('total_violations', 0)}")
     print(f"  Time:        {elapsed:.0f}s")
     print(f"{'='*50}")
 

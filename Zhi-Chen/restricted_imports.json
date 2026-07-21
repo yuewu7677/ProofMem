@@ -1,0 +1,743 @@
+{
+  "ma-proofbench-0001": [
+    "Mathlib.Algebra.Order.Group.Abs",
+    "Mathlib.Algebra.Order.Ring.Abs",
+    "Mathlib.Analysis.Calculus.ContDiff.Basic",
+    "Mathlib.Analysis.Calculus.Deriv.Basic",
+    "Mathlib.Analysis.Calculus.Deriv.MeanValue",
+    "Mathlib.Analysis.Calculus.FDeriv.Basic",
+    "Mathlib.Analysis.SpecialFunctions.Trigonometric.Bounds",
+    "Mathlib.Analysis.SpecialFunctions.Trigonometric.Deriv",
+    "Mathlib.Data.Real.Basic",
+    "Mathlib.Topology.Basic",
+    "Mathlib.Topology.MetricSpace.Basic",
+    "Mathlib.Topology.MetricSpace.Lipschitz"
+  ],
+  "ma-proofbench-0002": [
+    "Mathlib.Algebra.Order.Field.Basic",
+    "Mathlib.Analysis.Calculus.ContDiff.Basic",
+    "Mathlib.Analysis.Calculus.Deriv.Basic",
+    "Mathlib.Analysis.Calculus.FDeriv.Basic",
+    "Mathlib.Analysis.Real.Sqrt",
+    "Mathlib.Data.Real.Basic",
+    "Mathlib.Topology.Basic",
+    "Mathlib.Topology.MetricSpace.Basic"
+  ],
+  "ma-proofbench-0003": [
+    "Mathlib.Analysis.Calculus.ContDiff.Basic",
+    "Mathlib.Analysis.Calculus.ContDiff.Defs",
+    "Mathlib.Analysis.Calculus.Deriv.Basic",
+    "Mathlib.Analysis.Calculus.FDeriv.Basic",
+    "Mathlib.Data.Real.Basic",
+    "Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic",
+    "Mathlib.Order.Defs.PartialOrder",
+    "Mathlib.Topology.Basic",
+    "Mathlib.Topology.MetricSpace.Basic"
+  ],
+  "ma-proofbench-0004": [
+    "Mathlib.Data.Real.Basic",
+    "Mathlib.Order.Filter.Basic",
+    "Mathlib.Topology.Basic"
+  ],
+  "ma-proofbench-0005": [
+    "Mathlib.Analysis.Calculus.Deriv.Basic",
+    "Mathlib.Analysis.Calculus.FDeriv.Basic",
+    "Mathlib.Data.Complex.Basic",
+    "Mathlib.Data.Set.Basic",
+    "Mathlib.Data.Set.Operations",
+    "Mathlib.Topology.Bases",
+    "Mathlib.Topology.Basic",
+    "Mathlib.Topology.Connected",
+    "Mathlib.Topology.MetricSpace.Basic"
+  ],
+  "ma-proofbench-0006": [
+    "Mathlib.Analysis.InfiniteSum.Basic",
+    "Mathlib.Analysis.SpecialFunctions.ContinuousFunctionalCalculus.Abs",
+    "Mathlib.Data.Finset.Basic",
+    "Mathlib.Data.Real.Basic",
+    "Mathlib.Data.Set.Intervals.Basic",
+    "Mathlib.Order.Basic",
+    "Mathlib.Order.Filter.Basic",
+    "Mathlib.Order.Filter.Defs",
+    "Mathlib.Order.MinMax",
+    "Mathlib.Topology.Algebra.InfiniteSum.ENNReal",
+    "Mathlib.Topology.Algebra.IsUniformGroup.Basic",
+    "Mathlib.Topology.Basic",
+    "Mathlib.Topology.UniformConvergence"
+  ],
+  "ma-proofbench-0007": [
+    "Mathlib.Analysis.Calculus.ContDiff.Basic",
+    "Mathlib.Analysis.Calculus.Deriv.Basic",
+    "Mathlib.Analysis.Calculus.FDeriv.Basic",
+    "Mathlib.Data.Real.Basic",
+    "Mathlib.Topology.Algebra.Module.ContinuousLinearMap.Basic",
+    "Mathlib.Topology.Algebra.Module.ContinuousLinearMap.PiProd",
+    "Mathlib.Topology.Basic",
+    "Mathlib.Topology.MetricSpace.Basic"
+  ],
+  "ma-proofbench-0008": [
+    "Mathlib.Analysis.Calculus.ContDiff.Basic",
+    "Mathlib.Analysis.Calculus.Deriv.Basic",
+    "Mathlib.Analysis.Calculus.FDeriv.Basic",
+    "Mathlib.Data.Real.Basic",
+    "Mathlib.Data.Set.Intervals.Basic",
+    "Mathlib.Order.Basic",
+    "Mathlib.Order.Filter.Basic",
+    "Mathlib.Topology.Basic",
+    "Mathlib.Topology.MetricSpace.Basic",
+    "Mathlib.Topology.Order.OrderClosed",
+    "Mathlib.Topology.UniformConvergence"
+  ],
+  "ma-proofbench-0009": [
+    "Mathlib.Algebra.Ring.Periodic",
+    "Mathlib.Data.Real.Basic",
+    "Mathlib.Data.Set.Intervals.Basic",
+    "Mathlib.Logic.Function.Basic",
+    "Mathlib.MeasureTheory.Integral.Basic",
+    "Mathlib.MeasureTheory.Integral.IntegrableOn",
+    "Mathlib.MeasureTheory.MeasurableSpace.Basic",
+    "Mathlib.Topology.Basic"
+  ],
+  "ma-proofbench-0010": [
+    "Mathlib.Analysis.Calculus.Deriv.Basic",
+    "Mathlib.Analysis.Calculus.FDeriv.Basic",
+    "Mathlib.Data.Complex.Basic",
+    "Mathlib.Topology.Basic",
+    "Mathlib.Topology.MetricSpace.Basic"
+  ],
+  "ma-proofbench-0011": [
+    "Mathlib.MeasureTheory.Constructions.Prod",
+    "Mathlib.MeasureTheory.MeasurableSpace.Basic",
+    "Mathlib.MeasureTheory.Measure.Basic",
+    "Mathlib.MeasureTheory.Measure.SigmaFinite",
+    "Mathlib.Topology.Basic"
+  ],
+  "ma-proofbench-0012": [
+    "Mathlib.Algebra.Order.Star.Basic",
+    "Mathlib.Analysis.Analytic.Basic",
+    "Mathlib.Analysis.Calculus.ContDiff.Basic",
+    "Mathlib.Analysis.Calculus.Deriv.Basic",
+    "Mathlib.Analysis.Calculus.FDeriv.Basic",
+    "Mathlib.Analysis.Real.Sqrt",
+    "Mathlib.Data.Real.Basic",
+    "Mathlib.Topology.Basic",
+    "Mathlib.Topology.MetricSpace.Basic"
+  ],
+  "ma-proofbench-0013": [
+    "Mathlib.Algebra.EuclideanDomain.Basic",
+    "Mathlib.Algebra.Order.Field.Basic",
+    "Mathlib.Algebra.Order.Group.Unbundled.Basic",
+    "Mathlib.Analysis.Calculus.ContDiff.Basic",
+    "Mathlib.Analysis.Calculus.Deriv.Basic",
+    "Mathlib.Analysis.Calculus.FDeriv.Basic",
+    "Mathlib.Analysis.Convex.Function",
+    "Mathlib.Analysis.SpecialFunctions.Trigonometric.Bounds",
+    "Mathlib.Data.Real.Basic",
+    "Mathlib.Data.Set.Intervals.Basic",
+    "Mathlib.Data.TypeVec",
+    "Mathlib.Topology.Basic",
+    "Mathlib.Topology.MetricSpace.Basic"
+  ],
+  "ma-proofbench-0014": [
+    "Mathlib.Algebra.Order.Monoid.Unbundled.Basic",
+    "Mathlib.Analysis.Calculus.ContDiff.Basic",
+    "Mathlib.Analysis.Calculus.Deriv.Basic",
+    "Mathlib.Analysis.Calculus.FDeriv.Basic",
+    "Mathlib.Data.Real.Basic",
+    "Mathlib.Data.Set.Intervals.Basic",
+    "Mathlib.Logic.Function.Basic",
+    "Mathlib.Order.Basic",
+    "Mathlib.Topology.Basic",
+    "Mathlib.Topology.Connected",
+    "Mathlib.Topology.MetricSpace.Basic"
+  ],
+  "ma-proofbench-0015": [
+    "Mathlib.AlgebraicTopology.SimplicialSet.Nonsingular",
+    "Mathlib.Analysis.Calculus.Deriv.Basic",
+    "Mathlib.Analysis.Calculus.FDeriv.Basic",
+    "Mathlib.Analysis.InfiniteSum.Basic",
+    "Mathlib.Analysis.Normed.Group.InfiniteSum",
+    "Mathlib.Data.Complex.Basic",
+    "Mathlib.Data.Finite.Defs",
+    "Mathlib.Data.Nat.Parity",
+    "Mathlib.Data.Real.Basic",
+    "Mathlib.Data.Set.Finite.Basic",
+    "Mathlib.Data.Set.Infinite",
+    "Mathlib.Topology.Basic",
+    "Mathlib.Topology.MetricSpace.Basic"
+  ],
+  "ma-proofbench-0016": [
+    "Mathlib.Analysis.BoxIntegral.Basic",
+    "Mathlib.Analysis.Normed.Ring.Basic",
+    "Mathlib.Data.Set.Basic",
+    "Mathlib.MeasureTheory.Integral.Basic",
+    "Mathlib.MeasureTheory.MeasurableSpace.Basic",
+    "Mathlib.Topology.Basic",
+    "Mathlib.Topology.Bornology.Basic",
+    "Mathlib.Topology.MetricSpace.Basic"
+  ],
+  "ma-proofbench-0017": [
+    "Mathlib.Algebra.Order.Field.Basic",
+    "Mathlib.Analysis.BoxIntegral.Basic",
+    "Mathlib.Analysis.Calculus.ContDiff.Basic",
+    "Mathlib.Analysis.Calculus.Deriv.Basic",
+    "Mathlib.Analysis.Calculus.FDeriv.Basic",
+    "Mathlib.Data.Real.Basic",
+    "Mathlib.Data.Set.Intervals.Basic",
+    "Mathlib.MeasureTheory.Integral.IntervalIntegral.FundThmCalculus",
+    "Mathlib.Topology.Basic",
+    "Mathlib.Topology.MetricSpace.Basic"
+  ],
+  "ma-proofbench-0018": [
+    "Mathlib.MeasureTheory.Integral.Basic",
+    "Mathlib.MeasureTheory.MeasurableSpace.Basic",
+    "Mathlib.MeasureTheory.Measure.Basic",
+    "Mathlib.Topology.Basic"
+  ],
+  "ma-proofbench-0019": [
+    "Mathlib.Algebra.Group.Basic",
+    "Mathlib.Algebra.Order.BigOperators.Group.Finset",
+    "Mathlib.Algebra.Order.Field.Basic",
+    "Mathlib.Algebra.Order.Group.Basic",
+    "Mathlib.Algebra.Order.Ring.Basic",
+    "Mathlib.Data.Finset.Basic",
+    "Mathlib.Data.Real.Basic",
+    "Mathlib.Order.Filter.Basic",
+    "Mathlib.Topology.Basic",
+    "Mathlib.Topology.Order.Basic"
+  ],
+  "ma-proofbench-0020": [
+    "Mathlib.Analysis.Calculus.ContDiff.Basic",
+    "Mathlib.Analysis.Calculus.Deriv.Basic",
+    "Mathlib.Analysis.Calculus.Deriv.MeanValue",
+    "Mathlib.Analysis.Calculus.FDeriv.Basic",
+    "Mathlib.Data.Finset.Basic",
+    "Mathlib.Data.Real.Basic",
+    "Mathlib.Data.TypeVec",
+    "Mathlib.Order.Defs.LinearOrder",
+    "Mathlib.Topology.Basic",
+    "Mathlib.Topology.MetricSpace.Basic",
+    "Mathlib.Topology.Order.IntermediateValue"
+  ],
+  "ma-proofbench-0021": [
+    "Mathlib.Analysis.Calculus.Deriv.Basic",
+    "Mathlib.Analysis.Calculus.FDeriv.Basic",
+    "Mathlib.Data.Complex.Basic",
+    "Mathlib.Topology.Basic",
+    "Mathlib.Topology.MetricSpace.Basic"
+  ],
+  "ma-proofbench-0022": [
+    "Mathlib.Analysis.NormedSpace.Basic",
+    "Mathlib.Data.Set.Intervals.Basic",
+    "Mathlib.Logic.Function.Basic",
+    "Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic",
+    "Mathlib.Topology.Basic",
+    "Mathlib.Topology.MetricSpace.Basic",
+    "Mathlib.Topology.MetricSpace.Complete"
+  ],
+  "ma-proofbench-0023": [
+    "Mathlib.Analysis.NormedSpace.Basic",
+    "Mathlib.Analysis.NormedSpace.Dual",
+    "Mathlib.Topology.MetricSpace.Complete"
+  ],
+  "ma-proofbench-0024": [
+    "Mathlib.Data.Real.Basic",
+    "Mathlib.Order.Basic",
+    "Mathlib.Order.Filter.Basic",
+    "Mathlib.Topology.Basic"
+  ],
+  "ma-proofbench-0025": [
+    "Mathlib.Analysis.Calculus.ContDiff.Basic",
+    "Mathlib.Analysis.Calculus.Deriv.Basic",
+    "Mathlib.Analysis.Calculus.FDeriv.Basic",
+    "Mathlib.Analysis.InfiniteSum.Basic",
+    "Mathlib.Data.Real.Basic",
+    "Mathlib.Topology.Basic",
+    "Mathlib.Topology.MetricSpace.Basic"
+  ],
+  "ma-proofbench-0026": [
+    "Mathlib.Analysis.Calculus.Deriv.Basic",
+    "Mathlib.Analysis.Calculus.FDeriv.Basic",
+    "Mathlib.Data.Complex.Basic",
+    "Mathlib.Data.TypeVec",
+    "Mathlib.Topology.Basic",
+    "Mathlib.Topology.MetricSpace.Basic"
+  ],
+  "ma-proofbench-0027": [
+    "Mathlib.Analysis.Calculus.Deriv.Basic",
+    "Mathlib.Analysis.Calculus.FDeriv.Basic",
+    "Mathlib.Combinatorics.Matroid.Basic",
+    "Mathlib.Data.Complex.Basic",
+    "Mathlib.Data.Finite.Defs",
+    "Mathlib.Data.Set.Finite",
+    "Mathlib.Data.Set.Infinite",
+    "Mathlib.NumberTheory.LocalField.Basic",
+    "Mathlib.Topology.Basic",
+    "Mathlib.Topology.MetricSpace.Basic"
+  ],
+  "ma-proofbench-0028": [
+    "Mathlib.Analysis.Calculus.Deriv.Basic",
+    "Mathlib.Analysis.Calculus.FDeriv.Basic",
+    "Mathlib.Analysis.Calculus.FDeriv.Defs",
+    "Mathlib.Data.Complex.Basic",
+    "Mathlib.Topology.Basic",
+    "Mathlib.Topology.MetricSpace.Basic"
+  ],
+  "ma-proofbench-0029": [
+    "Mathlib.AlgebraicTopology.SimplicialSet.Nonempty",
+    "Mathlib.CategoryTheory.ObjectProperty.Basic",
+    "Mathlib.Data.Set.Basic",
+    "Mathlib.Data.Set.Indicator",
+    "Mathlib.Data.Set.Intervals.Basic",
+    "Mathlib.MeasureTheory.MeasurableSpace.Basic",
+    "Mathlib.MeasureTheory.Measure.Basic",
+    "Mathlib.Topology.Basic",
+    "Mathlib.Topology.Connected",
+    "Mathlib.Topology.Connected.Basic",
+    "Mathlib.Topology.Homeomorph.Lemmas"
+  ],
+  "ma-proofbench-0030": [
+    "Mathlib.Analysis.Calculus.ContDiff.Basic",
+    "Mathlib.Analysis.Calculus.Deriv.Basic",
+    "Mathlib.Analysis.Calculus.FDeriv.Basic",
+    "Mathlib.Data.Real.Basic",
+    "Mathlib.Topology.Basic",
+    "Mathlib.Topology.MetricSpace.Basic"
+  ],
+  "ma-proofbench-0101": [
+    "Mathlib.Analysis.Distribution.SchwartzSpace.Basic",
+    "Mathlib.Topology.Basic",
+    "Mathlib.Topology.MetricSpace.Basic"
+  ],
+  "ma-proofbench-0102": [
+    "Mathlib.Analysis.Calculus.ContDiff.Basic",
+    "Mathlib.Analysis.Calculus.Deriv.Basic",
+    "Mathlib.Analysis.Calculus.FDeriv.Basic",
+    "Mathlib.Data.Real.Basic",
+    "Mathlib.Topology.Basic",
+    "Mathlib.Topology.MetricSpace.Basic"
+  ],
+  "ma-proofbench-0103": [
+    "Mathlib.MeasureTheory.MeasurableSpace.Basic",
+    "Mathlib.Topology.Basic"
+  ],
+  "ma-proofbench-0104": [
+    "Mathlib.Analysis.InnerProductSpace.PiL2",
+    "Mathlib.Analysis.Normed.Ring.Basic",
+    "Mathlib.Data.Finmap",
+    "Mathlib.MeasureTheory.MeasurableSpace.Basic",
+    "Mathlib.MeasureTheory.Measure.Basic",
+    "Mathlib.Topology.Basic",
+    "Mathlib.Topology.Bornology.Basic",
+    "Mathlib.Topology.MetricSpace.Basic"
+  ],
+  "ma-proofbench-0105": [
+    "Mathlib.MeasureTheory.MeasurableSpace.Basic",
+    "Mathlib.MeasureTheory.Measure.Basic",
+    "Mathlib.Topology.Basic"
+  ],
+  "ma-proofbench-0106": [
+    "Mathlib.Analysis.Distribution.SchwartzSpace.Basic",
+    "Mathlib.Topology.Basic",
+    "Mathlib.Topology.MetricSpace.Basic"
+  ],
+  "ma-proofbench-0107": [
+    "Mathlib.Data.Real.Basic",
+    "Mathlib.Data.Set.Intervals.Basic",
+    "Mathlib.MeasureTheory.Function.LpSeminorm.Defs",
+    "Mathlib.MeasureTheory.MeasurableSpace.Basic",
+    "Mathlib.Order.Filter.Basic",
+    "Mathlib.Order.Filter.Defs",
+    "Mathlib.Topology.Basic"
+  ],
+  "ma-proofbench-0108": [
+    "Mathlib.Topology.Basic",
+    "Mathlib.Topology.MetricSpace.Basic"
+  ],
+  "ma-proofbench-0109": [
+    "Mathlib.Analysis.Calculus.Deriv.Basic",
+    "Mathlib.Analysis.Calculus.FDeriv.Basic",
+    "Mathlib.Data.Complex.Basic",
+    "Mathlib.Topology.Basic",
+    "Mathlib.Topology.MetricSpace.Basic"
+  ],
+  "ma-proofbench-0110": [
+    "Mathlib.Data.Real.Basic",
+    "Mathlib.Data.Set.Basic",
+    "Mathlib.Order.Filter.Basic",
+    "Mathlib.Topology.Basic"
+  ],
+  "ma-proofbench-0111": [
+    "Mathlib.MeasureTheory.Measure.Basic",
+    "Mathlib.Topology.Basic",
+    "Mathlib.Topology.MetricSpace.Basic"
+  ],
+  "ma-proofbench-0112": [
+    "Mathlib.Algebra.Module.Submodule.Defs",
+    "Mathlib.Analysis.Normed.Lp.MeasurableSpace",
+    "Mathlib.Data.Set.Intervals.Basic",
+    "Mathlib.MeasureTheory.Function.LpSpace.Basic",
+    "Mathlib.MeasureTheory.Measure.Basic",
+    "Mathlib.Topology.Basic",
+    "Mathlib.Topology.ContinuousMap.Defs",
+    "Mathlib.Topology.MetricSpace.Basic"
+  ],
+  "ma-proofbench-0113": [
+    "Mathlib.Data.Real.Basic",
+    "Mathlib.Logic.Basic",
+    "Mathlib.Topology.Basic",
+    "Mathlib.Topology.MetricSpace.Basic"
+  ],
+  "ma-proofbench-0114": [
+    "Mathlib.Analysis.BoxIntegral.Basic",
+    "Mathlib.MeasureTheory.Integral.Basic",
+    "Mathlib.MeasureTheory.MeasurableSpace.Basic",
+    "Mathlib.MeasureTheory.Measure.Basic",
+    "Mathlib.Order.Filter.Basic",
+    "Mathlib.Order.Filter.Defs",
+    "Mathlib.Order.Hom.Set",
+    "Mathlib.Topology.Basic",
+    "Mathlib.Topology.MetricSpace.Basic"
+  ],
+  "ma-proofbench-0115": [
+    "Mathlib.Analysis.Calculus.ContDiff.Basic",
+    "Mathlib.Topology.Basic",
+    "Mathlib.Topology.MetricSpace.Basic"
+  ],
+  "ma-proofbench-0116": [
+    "Mathlib.Analysis.Distribution.SchwartzSpace.Basic",
+    "Mathlib.Topology.Basic",
+    "Mathlib.Topology.MetricSpace.Basic"
+  ],
+  "ma-proofbench-0117": [
+    "Mathlib.Data.Set.Intervals.Basic",
+    "Mathlib.Logic.Basic",
+    "Mathlib.MeasureTheory.Function.LpSpace.Basic",
+    "Mathlib.MeasureTheory.Function.SimpleFunc",
+    "Mathlib.MeasureTheory.Measure.Basic",
+    "Mathlib.Order.Filter.Basic",
+    "Mathlib.Order.Filter.Defs",
+    "Mathlib.Topology.Basic",
+    "Mathlib.Topology.MetricSpace.Basic"
+  ],
+  "ma-proofbench-0118": [
+    "Mathlib.MeasureTheory.Function.LpSeminorm.Defs",
+    "Mathlib.Order.Filter.Defs",
+    "Mathlib.Topology.Basic",
+    "Mathlib.Topology.Defs.Filter",
+    "Mathlib.Topology.MetricSpace.Basic"
+  ],
+  "ma-proofbench-0119": [
+    "Mathlib.Analysis.Calculus.Deriv.Basic",
+    "Mathlib.Analysis.Calculus.FDeriv.Basic",
+    "Mathlib.Data.Complex.Basic",
+    "Mathlib.Data.Set.Operations",
+    "Mathlib.MeasureTheory.Constructions.BorelSpace.Metric",
+    "Mathlib.Topology.Basic",
+    "Mathlib.Topology.MetricSpace.Basic"
+  ],
+  "ma-proofbench-0120": [
+    "Mathlib.Analysis.Calculus.ContDiff.Basic",
+    "Mathlib.Analysis.Calculus.Deriv.Basic",
+    "Mathlib.Analysis.Calculus.FDeriv.Basic",
+    "Mathlib.Data.Real.Basic",
+    "Mathlib.Data.Set.Intervals.Basic",
+    "Mathlib.Topology.Basic",
+    "Mathlib.Topology.MetricSpace.Basic"
+  ],
+  "ma-proofbench-0121": [
+    "Mathlib.Analysis.Calculus.Deriv.Basic",
+    "Mathlib.Analysis.Calculus.FDeriv.Basic",
+    "Mathlib.Analysis.Complex.UpperHalfPlane.Basic",
+    "Mathlib.Analysis.InnerProductSpace.Defs",
+    "Mathlib.Analysis.InnerProductSpace.Harmonic.Basic",
+    "Mathlib.Data.Complex.Basic",
+    "Mathlib.Data.Set.Intervals.Basic",
+    "Mathlib.MeasureTheory.Integral.Basic",
+    "Mathlib.MeasureTheory.Integral.IntegrableOn",
+    "Mathlib.Topology.Basic",
+    "Mathlib.Topology.MetricSpace.Basic"
+  ],
+  "ma-proofbench-0122": [
+    "Mathlib.Analysis.Distribution.SchwartzSpace.Basic",
+    "Mathlib.Topology.Basic",
+    "Mathlib.Topology.MetricSpace.Basic"
+  ],
+  "ma-proofbench-0123": [
+    "Mathlib.Analysis.Calculus.Deriv.Basic",
+    "Mathlib.Analysis.Calculus.FDeriv.Basic",
+    "Mathlib.Data.Complex.Basic",
+    "Mathlib.Topology.Basic",
+    "Mathlib.Topology.MetricSpace.Basic"
+  ],
+  "ma-proofbench-0124": [
+    "Mathlib.Analysis.InnerProductSpace.Defs",
+    "Mathlib.Analysis.NormedSpace.Basic",
+    "Mathlib.Topology.MetricSpace.Complete"
+  ],
+  "ma-proofbench-0125": [
+    "Mathlib.Data.ENNReal.Basic",
+    "Mathlib.MeasureTheory.Function.LpSeminorm.Defs",
+    "Mathlib.MeasureTheory.MeasurableSpace.Basic",
+    "Mathlib.MeasureTheory.Measure.Basic",
+    "Mathlib.Topology.Basic",
+    "Mathlib.Topology.MetricSpace.Basic"
+  ],
+  "ma-proofbench-0126": [
+    "Mathlib.MeasureTheory.MeasurableSpace.Basic",
+    "Mathlib.MeasureTheory.Measure.Basic",
+    "Mathlib.Topology.Basic"
+  ],
+  "ma-proofbench-0127": [
+    "Mathlib.Data.Real.Basic"
+  ],
+  "ma-proofbench-0128": [
+    "Mathlib.Topology.Basic",
+    "Mathlib.Topology.MetricSpace.Basic"
+  ],
+  "ma-proofbench-0129": [
+    "Mathlib.Analysis.Calculus.Deriv.Basic",
+    "Mathlib.Analysis.Calculus.FDeriv.Basic",
+    "Mathlib.Analysis.Calculus.FDeriv.Defs",
+    "Mathlib.Data.Complex.Basic",
+    "Mathlib.Topology.Basic",
+    "Mathlib.Topology.MetricSpace.Basic"
+  ],
+  "ma-proofbench-0130": [
+    "Mathlib.Data.ENNReal.Basic",
+    "Mathlib.Order.Hom.Set",
+    "Mathlib.Probability.ProbabilityMassFunction.Basic",
+    "Mathlib.Topology.Basic"
+  ],
+  "formalmath-l3-0001": [
+    "Mathlib.Algebra.Order.Ring.Basic",
+    "Mathlib.Analysis.Calculus.Deriv.Basic",
+    "Mathlib.Analysis.Calculus.FDeriv.Basic",
+    "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic",
+    "Mathlib.Data.Real.Basic",
+    "Mathlib.Topology.Basic"
+  ],
+  "formalmath-l3-0002": [
+    "Mathlib.Analysis.Calculus.Deriv.Basic",
+    "Mathlib.Analysis.Calculus.FDeriv.Basic",
+    "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic",
+    "Mathlib.Data.Real.Basic",
+    "Mathlib.Topology.Basic"
+  ],
+  "formalmath-l3-0003": [
+    "Mathlib.Analysis.Calculus.Deriv.Basic",
+    "Mathlib.Analysis.Calculus.FDeriv.Basic",
+    "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic",
+    "Mathlib.Data.Real.Basic",
+    "Mathlib.Topology.Basic"
+  ],
+  "formalmath-l3-0004": [
+    "Mathlib.Analysis.Calculus.Deriv.Basic",
+    "Mathlib.Analysis.Calculus.FDeriv.Basic",
+    "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic",
+    "Mathlib.Data.Real.Basic",
+    "Mathlib.Data.Set.Intervals.Basic",
+    "Mathlib.Topology.Basic"
+  ],
+  "formalmath-l3-0005": [
+    "Mathlib.Analysis.Calculus.Deriv.Basic",
+    "Mathlib.Analysis.Calculus.FDeriv.Basic",
+    "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic",
+    "Mathlib.Data.Real.Basic",
+    "Mathlib.Topology.Basic"
+  ],
+  "formalmath-l3-0006": [
+    "Mathlib.Analysis.Calculus.Deriv.Basic",
+    "Mathlib.Analysis.Calculus.FDeriv.Basic",
+    "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic",
+    "Mathlib.Data.Real.Basic",
+    "Mathlib.Topology.Basic"
+  ],
+  "formalmath-l3-0007": [
+    "Mathlib.Analysis.Calculus.Deriv.Basic",
+    "Mathlib.Analysis.Calculus.FDeriv.Basic",
+    "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic",
+    "Mathlib.Data.Real.Basic",
+    "Mathlib.Topology.Basic"
+  ],
+  "formalmath-l3-0008": [
+    "Mathlib.Analysis.Calculus.Deriv.Basic",
+    "Mathlib.Analysis.Calculus.FDeriv.Basic",
+    "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic",
+    "Mathlib.Data.Real.Basic",
+    "Mathlib.Topology.Basic"
+  ],
+  "formalmath-l3-0009": [
+    "Mathlib.Analysis.Calculus.Deriv.Basic",
+    "Mathlib.Analysis.Calculus.FDeriv.Basic",
+    "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic",
+    "Mathlib.Data.Real.Basic",
+    "Mathlib.Topology.Basic"
+  ],
+  "formalmath-l3-0010": [
+    "Mathlib.Analysis.Calculus.Deriv.Basic",
+    "Mathlib.Analysis.Calculus.FDeriv.Basic",
+    "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic",
+    "Mathlib.Data.Real.Basic",
+    "Mathlib.Topology.Basic"
+  ],
+  "formalmath-l3-0011": [
+    "Mathlib.Analysis.Calculus.Deriv.Basic",
+    "Mathlib.Analysis.Calculus.FDeriv.Basic",
+    "Mathlib.Analysis.Calculus.FDeriv.Defs",
+    "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic",
+    "Mathlib.Data.Real.Basic",
+    "Mathlib.Topology.Basic"
+  ],
+  "formalmath-l3-0012": [
+    "Mathlib.Analysis.Calculus.Deriv.Basic",
+    "Mathlib.Analysis.Calculus.FDeriv.Basic",
+    "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic",
+    "Mathlib.Data.Real.Basic",
+    "Mathlib.Topology.Basic"
+  ],
+  "formalmath-l3-0013": [
+    "Mathlib.Analysis.Calculus.Deriv.Basic",
+    "Mathlib.Analysis.Calculus.FDeriv.Basic",
+    "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic",
+    "Mathlib.Data.Real.Basic",
+    "Mathlib.Topology.Basic"
+  ],
+  "formalmath-l3-0014": [
+    "Mathlib.Analysis.Calculus.Deriv.Basic",
+    "Mathlib.Analysis.Calculus.FDeriv.Basic",
+    "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic",
+    "Mathlib.Data.Real.Basic",
+    "Mathlib.Topology.Basic"
+  ],
+  "formalmath-l3-0015": [
+    "Mathlib.Analysis.Calculus.Deriv.Basic",
+    "Mathlib.Analysis.Calculus.FDeriv.Basic",
+    "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic",
+    "Mathlib.Data.Real.Basic",
+    "Mathlib.Topology.Basic"
+  ],
+  "formalmath-l3-0016": [
+    "Mathlib.Analysis.Calculus.Deriv.Basic",
+    "Mathlib.Analysis.Calculus.FDeriv.Basic",
+    "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic",
+    "Mathlib.Data.Real.Basic",
+    "Mathlib.Topology.Basic"
+  ],
+  "formalmath-l3-0017": [
+    "Mathlib.Analysis.Calculus.Deriv.Basic",
+    "Mathlib.Analysis.Calculus.FDeriv.Basic",
+    "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic",
+    "Mathlib.Data.Real.Basic",
+    "Mathlib.Data.Set.Intervals.Basic",
+    "Mathlib.Topology.Basic"
+  ],
+  "formalmath-l3-0018": [
+    "Mathlib.Analysis.Calculus.Deriv.Basic",
+    "Mathlib.Analysis.Calculus.FDeriv.Basic",
+    "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic",
+    "Mathlib.Data.Real.Basic",
+    "Mathlib.Data.Set.Intervals.Basic",
+    "Mathlib.Topology.Basic"
+  ],
+  "formalmath-l3-0019": [
+    "Mathlib.Analysis.Calculus.Deriv.Basic",
+    "Mathlib.Analysis.Calculus.FDeriv.Basic",
+    "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic",
+    "Mathlib.Data.Real.Basic",
+    "Mathlib.Topology.Basic"
+  ],
+  "formalmath-l3-0020": [
+    "Mathlib.Analysis.Calculus.Deriv.Basic",
+    "Mathlib.Analysis.Calculus.FDeriv.Basic",
+    "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic",
+    "Mathlib.Data.Real.Basic",
+    "Mathlib.Topology.Basic"
+  ],
+  "formalmath-l3-0021": [
+    "Mathlib.Analysis.Calculus.Deriv.Basic",
+    "Mathlib.Analysis.Calculus.FDeriv.Basic",
+    "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic",
+    "Mathlib.Data.Real.Basic",
+    "Mathlib.Topology.Basic"
+  ],
+  "formalmath-l3-0022": [
+    "Mathlib.Analysis.Calculus.Deriv.Basic",
+    "Mathlib.Analysis.Calculus.Deriv.Mul",
+    "Mathlib.Analysis.Calculus.FDeriv.Basic",
+    "Mathlib.Analysis.Complex.Trigonometric",
+    "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic",
+    "Mathlib.Analysis.SpecialFunctions.Trigonometric.Deriv",
+    "Mathlib.Data.Real.Basic",
+    "Mathlib.Topology.Basic"
+  ],
+  "formalmath-l3-0023": [
+    "Mathlib.Analysis.Calculus.Deriv.Basic",
+    "Mathlib.Analysis.Calculus.FDeriv.Basic",
+    "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic",
+    "Mathlib.Data.Real.Basic",
+    "Mathlib.Topology.Basic"
+  ],
+  "formalmath-l3-0024": [
+    "Mathlib.Analysis.Calculus.Deriv.Basic",
+    "Mathlib.Analysis.Calculus.FDeriv.Basic",
+    "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic",
+    "Mathlib.Data.Real.Basic",
+    "Mathlib.Topology.Basic"
+  ],
+  "formalmath-l3-0025": [
+    "Mathlib.Algebra.Group.Basic",
+    "Mathlib.Analysis.Calculus.Deriv.Basic",
+    "Mathlib.Analysis.Calculus.FDeriv.Basic",
+    "Mathlib.Analysis.Calculus.FDeriv.Defs",
+    "Mathlib.Analysis.Complex.Trigonometric",
+    "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic",
+    "Mathlib.Analysis.SpecialFunctions.Trigonometric.Deriv",
+    "Mathlib.Data.Real.Basic",
+    "Mathlib.Topology.Basic"
+  ],
+  "formalmath-l3-0026": [
+    "Mathlib.Analysis.Calculus.Deriv.Basic",
+    "Mathlib.Analysis.Calculus.FDeriv.Basic",
+    "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic",
+    "Mathlib.Data.Real.Basic",
+    "Mathlib.Topology.Basic"
+  ],
+  "formalmath-l3-0027": [
+    "Mathlib.Analysis.Calculus.Deriv.Basic",
+    "Mathlib.Analysis.Calculus.FDeriv.Basic",
+    "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic",
+    "Mathlib.Data.Real.Basic",
+    "Mathlib.Order.Bounds.Defs",
+    "Mathlib.Topology.Basic"
+  ],
+  "formalmath-l3-0028": [
+    "Mathlib.Analysis.Calculus.Deriv.Basic",
+    "Mathlib.Analysis.Calculus.FDeriv.Basic",
+    "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic",
+    "Mathlib.Data.Real.Basic",
+    "Mathlib.Topology.Basic"
+  ],
+  "formalmath-l3-0029": [
+    "Mathlib.Algebra.Order.Field.Basic",
+    "Mathlib.Analysis.Calculus.ContDiff.Basic",
+    "Mathlib.Analysis.Calculus.ContDiff.Defs",
+    "Mathlib.Analysis.Calculus.Deriv.Basic",
+    "Mathlib.Analysis.Calculus.FDeriv.Basic",
+    "Mathlib.Analysis.Convex.Deriv",
+    "Mathlib.Analysis.Convex.Function",
+    "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic",
+    "Mathlib.Analysis.SpecialFunctions.Trigonometric.Deriv",
+    "Mathlib.Data.Real.Basic",
+    "Mathlib.Order.Defs.PartialOrder",
+    "Mathlib.Order.Hom.Set",
+    "Mathlib.Topology.Basic"
+  ],
+  "formalmath-l3-0030": [
+    "Mathlib.Analysis.Calculus.Deriv.Basic",
+    "Mathlib.Analysis.Calculus.FDeriv.Basic",
+    "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic",
+    "Mathlib.Data.Real.Basic",
+    "Mathlib.Topology.Basic"
+  ]
+}
