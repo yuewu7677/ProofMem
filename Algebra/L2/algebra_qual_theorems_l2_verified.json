@@ -1,0 +1,484 @@
+[
+  {
+    "id": "001",
+    "field": "Module Theory",
+    "latex_theorem": "Let $R$ be a ring and let $M$ be a Noetherian left $R$-module. If $f : M \\to M$ is a surjective homomorphism of $R$-modules, then $f$ is an isomorphism.",
+    "latex_proof": "Since $f$ is already surjective, it suffices to prove that $f$ is injective, i.e. that $\\ker(f) = 0$.\n\nConsider the chain of submodules\n\\[ \\ker(f) \\subseteq \\ker(f^{2}) \\subseteq \\ker(f^{3}) \\subseteq \\cdots \\subseteq M . \\]\nIt is indeed an ascending chain: if $f^{n}(x) = 0$ then $f^{n+1}(x) = f(f^{n}(x)) = f(0) = 0$. Since $M$ is Noetherian, this chain stabilizes, so there is $n \\ge 1$ with $\\ker(f^{n}) = \\ker(f^{n+1})$.\n\nLet $x \\in \\ker(f)$. As $f$ is surjective, so is $f^{n}$, hence $x = f^{n}(y)$ for some $y \\in M$. Then\n\\[ f^{n+1}(y) = f\\bigl(f^{n}(y)\\bigr) = f(x) = 0 , \\]\nso $y \\in \\ker(f^{n+1}) = \\ker(f^{n})$, and therefore $x = f^{n}(y) = 0$.\n\nHence $\\ker(f) = 0$, so $f$ is injective. Being bijective and $R$-linear, $f$ is an isomorphism of $R$-modules (its set-theoretic inverse is automatically $R$-linear). $\\blacksquare$",
+    "lean_theorem": "theorem surjective_endomorphism_bijective_of_isNoetherian_l2\n    {A A₁ : Type*} [Ring A] [AddCommGroup A₁] [Module A A₁] [IsNoetherian A A₁]\n    (u : A₁ →ₗ[A] A₁) (hu : Function.Surjective u) : Function.Bijective u",
+    "lean_proof": "import Mathlib\n\ntheorem surjective_endomorphism_bijective_of_isNoetherian_l2\n    {A A₁ : Type*} [Ring A] [AddCommGroup A₁] [Module A A₁] [IsNoetherian A A₁]\n    (u : A₁ →ₗ[A] A₁) (hu : Function.Surjective u) : Function.Bijective u :=\n  ⟨IsNoetherian.injective_of_surjective_endomorphism u hu, hu⟩\n",
+    "source": {
+      "university": "University of Oregon",
+      "term": "Fall",
+      "year": "2025",
+      "problem": "Part I, Problem 3"
+    },
+    "parent_id": "surjective_endomorphism_bijective_of_isNoetherian",
+    "transformation_type": "alpha_rename"
+  },
+  {
+    "id": "002",
+    "field": "Commutative Algebra",
+    "latex_theorem": "Let $I$ and $J$ be ideals in $\\mathbb{C}[x_1,\\dots,x_n]$ such that the product $IJ$ is a radical ideal. Then $IJ = I \\cap J$.",
+    "latex_proof": "The inclusion $IJ \\subseteq I \\cap J$ holds for any pair of ideals: a generator $ab$ of $IJ$ with $a \\in I$ and $b \\in J$ lies in $I$ (because $I$ is an ideal and $a \\in I$) and in $J$ (because $J$ is an ideal and $b \\in J$), and $I \\cap J$ is closed under finite sums.\n\nFor the reverse inclusion, let $x \\in I \\cap J$. Then\n\\[ x^{2} = x \\cdot x \\in IJ , \\]\nsince the first factor lies in $I$ and the second in $J$. Because $IJ$ is radical and $x^{2} \\in IJ$, we get $x \\in IJ$. Hence $I \\cap J \\subseteq IJ$, and the two inclusions give $IJ = I \\cap J$.\n\nEquivalently, one may argue geometrically as in the source: $\\mathcal{V}(IJ) = \\mathcal{V}(I) \\cup \\mathcal{V}(J) = \\mathcal{V}(I \\cap J)$, so Hilbert's Nullstellensatz gives $\\sqrt{IJ} = \\sqrt{I \\cap J} \\supseteq I \\cap J$; since $IJ$ is radical, $\\sqrt{IJ} = IJ$, whence $I \\cap J \\subseteq IJ$. $\\blacksquare$",
+    "lean_theorem": "theorem mul_eq_inf_of_isRadical_mul_l2 {u : ℕ}\n    (u₁ u₂ : Ideal (MvPolynomial (Fin u) ℂ)) (hu : (u₁ * u₂).IsRadical) :\n    u₁ * u₂ = u₁ ⊓ u₂",
+    "lean_proof": "import Mathlib\n\ntheorem mul_eq_inf_of_isRadical_mul_l2 {u : ℕ}\n    (u₁ u₂ : Ideal (MvPolynomial (Fin u) ℂ)) (hu : (u₁ * u₂).IsRadical) :\n    u₁ * u₂ = u₁ ⊓ u₂ := by\n  refine le_antisymm Ideal.mul_le_inf ?_\n  intro x hx\n  obtain ⟨hxI, hxJ⟩ := Submodule.mem_inf.mp hx\n  have h2 : x ^ 2 ∈ u₁ * u₂ := by\n    rw [pow_two]\n    exact Ideal.mul_mem_mul hxI hxJ\n  -- `Ideal.IsRadical I` unfolds to `I.radical ≤ I`, a Pi type, so dot-notation\n  -- resolves into `Function`, not `Ideal.IsPrime`.  Apply `h` directly:\n  -- `x ∈ (I*J).radical` is definitionally `∃ n, x ^ n ∈ I * J` (`mem_radical_iff`).\n  exact hu ⟨2, h2⟩\n",
+    "source": {
+      "university": "University of Oregon",
+      "term": "Fall",
+      "year": "2025",
+      "problem": "Part I, Problem 4"
+    },
+    "parent_id": "mul_eq_inf_of_isRadical_mul",
+    "transformation_type": "alpha_rename"
+  },
+  {
+    "id": "003",
+    "field": "Commutative Algebra",
+    "latex_theorem": null,
+    "latex_proof": null,
+    "lean_theorem": "theorem ker_aeval_t3_t5_t7_isPrime_l2 :\n    (RingHom.ker (MvPolynomial.aeval\n        ![(Polynomial.X : Polynomial ℂ) ^ 3, (Polynomial.X : Polynomial ℂ) ^ 5,\n          (Polynomial.X : Polynomial ℂ) ^ 7] :\n      MvPolynomial (Fin 3) ℂ →ₐ[ℂ] Polynomial ℂ)).IsPrime",
+    "lean_proof": "import Mathlib\n\ntheorem ker_aeval_t3_t5_t7_isPrime_l2 :\n    (RingHom.ker (MvPolynomial.aeval\n        ![(Polynomial.X : Polynomial ℂ) ^ 3, (Polynomial.X : Polynomial ℂ) ^ 5,\n          (Polynomial.X : Polynomial ℂ) ^ 7] :\n      MvPolynomial (Fin 3) ℂ →ₐ[ℂ] Polynomial ℂ)).IsPrime :=\n  RingHom.ker_isPrime _\n",
+    "source": {
+      "university": "University of Oregon",
+      "term": "Fall",
+      "year": "2021",
+      "problem": "Part II, Problem 2(a)"
+    },
+    "parent_id": "ker_aeval_t2_t3_t4_isPrime",
+    "transformation_type": "constant_substitution",
+    "semantic_note": "Different ideal from the L1 parent; proof unchanged because ker of any algebra map into the domain ℂ[X] is prime. Sibling (L3-style), not a meaning-preserving L2 perturbation.",
+    "rubric_level_actual": "L3-sibling"
+  },
+  {
+    "id": "004",
+    "field": "Field Theory",
+    "latex_theorem": "Let $F$ be a field of characteristic $p > 0$, let $c \\in F$, and consider $f(x) = x^{p} - x - c \\in F[x]$. If $\\alpha$ is a root of $f$ in an algebraic closure $\\overline{F}$, then $\\alpha, \\alpha + 1, \\alpha + 2, \\dots, \\alpha + p - 1$ are roots of $f$, and these are all of its roots.",
+    "latex_proof": "We first record that $(n \\cdot 1)^{p} = n \\cdot 1$ for every integer $n \\ge 0$ in a ring of characteristic $p$. This follows by induction on $n$: for $n = 0$ it is $0^{p} = 0$, and if it holds for $n$ then, using the Frobenius (``freshman's dream'') identity $(u+v)^{p} = u^{p} + v^{p}$ valid in characteristic $p$,\n\\[ ((n+1)\\cdot 1)^{p} = (n\\cdot 1 + 1)^{p} = (n \\cdot 1)^{p} + 1^{p} = n\\cdot 1 + 1 = (n+1)\\cdot 1 . \\]\n\nNow let $\\alpha$ satisfy $\\alpha^{p} - \\alpha - c = 0$ and let $n \\ge 0$ be an integer. Then\n\\[ f(\\alpha + n) = (\\alpha + n)^{p} - (\\alpha + n) - c = \\alpha^{p} + n^{p} - \\alpha - n - c = (\\alpha^{p} - \\alpha - c) + (n^{p} - n) = 0 + 0 = 0 . \\]\nSo $\\alpha + n$ is a root of $f$ for every $n$, and in particular $\\alpha, \\alpha+1, \\dots, \\alpha+p-1$ are roots.\n\nThese $p$ elements are pairwise distinct: if $\\alpha + i = \\alpha + j$ with $0 \\le i, j \\le p-1$ then $i \\equiv j \\pmod p$, hence $i = j$. Since $\\deg f = p$ and a polynomial of degree $p$ over a field has at most $p$ roots, this is the complete list of roots of $f$, each occurring with multiplicity one. $\\blacksquare$",
+    "lean_theorem": "theorem artin_schreier_add_natCast_is_root_l2 {A : Type*} [Field A] {u : ℕ} [Fact u.Prime] [CharP A u] (u₁ u₂ : A) (u₃ : ℕ) (hu : u₂ ^ u - u₂ - u₁ = 0) :\n    (u₂ + (u₃ : A)) ^ u - (u₂ + (u₃ : A)) - u₁ = 0",
+    "lean_proof": "import Mathlib\n\ntheorem artin_schreier_add_natCast_is_root_l2 {A : Type*} [Field A] {u : ℕ} [Fact u.Prime] [CharP A u] (u₁ u₂ : A) (u₃ : ℕ) (hu : u₂ ^ u - u₂ - u₁ = 0) :\n    (u₂ + (u₃ : A)) ^ u - (u₂ + (u₃ : A)) - u₁ = 0 := by\n  have hp : u ≠ 0 := (Fact.out : Nat.Prime u).ne_zero\n  have key : ∀ k : ℕ, ((k : A)) ^ u = (k : A) := by\n    intro k\n    induction k with\n    | zero => simp [zero_pow hp]\n    | succ j ih =>\n        have hstep : (((j : A) + 1)) ^ u = ((j : A)) ^ u + (1 : A) ^ u := by\n          rw [add_pow_char]\n        push_cast\n        rw [hstep, ih, one_pow]\n  have hsum : (u₂ + (u₃ : A)) ^ u = u₂ ^ u + ((u₃ : A)) ^ u := by\n    rw [add_pow_char]\n  rw [hsum, key u₃]\n  linear_combination hu\n",
+    "source": {
+      "university": "University of Oregon",
+      "term": "Winter",
+      "year": "2024",
+      "problem": "Part III, Problem 1(a)"
+    },
+    "parent_id": "artin_schreier_add_natCast_is_root",
+    "transformation_type": "alpha_rename+hypothesis_reorder"
+  },
+  {
+    "id": "005",
+    "field": "Ring Theory",
+    "latex_theorem": "Let $R$ be a ring. Then $R$ is left semisimple if and only if every left ideal of $R$ is generated by an idempotent.",
+    "latex_proof": "($\\Rightarrow$) Suppose $R$ is left semisimple and let $I$ be a left ideal. By semisimplicity there is a left ideal $J$ with ${}_R R = I \\oplus J$. Write $1 = e + f$ with $e \\in I$ and $f \\in J$.\n\nLet $x \\in I$. Then $x = x \\cdot 1 = xe + xf$. Here $xe \\in I$ and $xf \\in J$, because $I$ and $J$ are left ideals. Moreover $xf = x - xe \\in I$ since $x, xe \\in I$. Hence $xf \\in I \\cap J = 0$, so $xf = 0$ and $x = xe$.\n\nApplying this with $x = e \\in I$ gives $e = e^{2}$, so $e$ is idempotent. Applying it to a general $x \\in I$ gives $x = xe \\in Re$, so $I \\subseteq Re$; and $Re \\subseteq I$ because $e \\in I$ and $I$ is a left ideal. Therefore $I = Re$ is generated by the idempotent $e$.\n\n($\\Leftarrow$) Suppose every left ideal is generated by an idempotent. Let $I$ be a left ideal and write $I = Re$ with $e^{2} = e$. Put $J = R(1-e)$. We claim ${}_R R = I \\oplus J$.\n\nEvery $r \\in R$ satisfies $r = re + r(1-e) \\in I + J$, so ${}_R R = I + J$. For directness, let $r \\in I \\cap J$, say $r = ae = b(1-e)$. Then\n\\[ re = (ae)e = a e^{2} = ae = r , \\qquad re = \\bigl(b(1-e)\\bigr)e = b(e - e^{2}) = b \\cdot 0 = 0 , \\]\nso $r = 0$. Hence $I \\cap J = 0$ and the sum is direct.\n\nThus every left ideal of $R$ is a direct summand of ${}_R R$, which is exactly the statement that ${}_R R$ is a semisimple module, i.e. $R$ is left semisimple. $\\blacksquare$",
+    "lean_theorem": "theorem isSemisimpleRing_iff_forall_leftIdeal_span_idempotent_l2 (A : Type*) [Ring A] :\n    IsSemisimpleRing A ↔\n      ∀ I : Submodule A A, ∃ e : A, IsIdempotentElem e ∧ I = Submodule.span A {e}",
+    "lean_proof": "import Mathlib\n\ntheorem isSemisimpleRing_iff_forall_leftIdeal_span_idempotent_l2 (A : Type*) [Ring A] :\n    IsSemisimpleRing A ↔\n      ∀ I : Submodule A A, ∃ e : A, IsIdempotentElem e ∧ I = Submodule.span A {e} := by\n  constructor\n  · intro _ I\n    obtain ⟨J, hJ⟩ := ComplementedLattice.exists_isCompl I\n    have h1 : (1 : A) ∈ I ⊔ J := by\n      rw [hJ.sup_eq_top]; trivial\n    obtain ⟨e, he, f, hf, hef⟩ := Submodule.mem_sup.mp h1\n    have hkey : ∀ x ∈ I, x = x * e := by\n      intro x hx\n      have hxe : x * e ∈ I := by simpa [smul_eq_mul] using I.smul_mem x he\n      have hxf : x * f ∈ J := by simpa [smul_eq_mul] using J.smul_mem x hf\n      have hadd : x * e + x * f = x := by rw [← mul_add, hef, mul_one]\n      have hsub : x * f = x - x * e := eq_sub_of_add_eq' hadd\n      have hmemI : x * f ∈ I := by rw [hsub]; exact I.sub_mem hx hxe\n      have hzero : x * f = 0 := by\n        have : x * f ∈ I ⊓ J := ⟨hmemI, hxf⟩\n        rw [hJ.inf_eq_bot] at this\n        simpa using this\n      -- `rw [← hadd]` unrestricted would rewrite the `x` on *both* sides\n      -- (and inside the replacement), leaving `x * e = x * e * e`.\n      -- Restrict the rewrite to the left-hand side.\n      conv_lhs => rw [← hadd]\n      rw [hzero, add_zero]\n    refine ⟨e, (hkey e he).symm, le_antisymm ?_ ?_⟩\n    · intro x hx\n      rw [Submodule.mem_span_singleton]\n      exact ⟨x, by rw [smul_eq_mul]; exact (hkey x hx).symm⟩\n    · rw [Submodule.span_le, Set.singleton_subset_iff]\n      exact he\n  · intro h\n    -- `IsSemisimpleModule` is `@[mk_iff] class ... extends ComplementedLattice\n    -- (Submodule R M)`.  Rather than guess the arity of the anonymous\n    -- constructor, go through the generated iff, which is how Mathlib itself\n    -- builds this instance (SimpleModule/Basic.lean:77).\n    refine (isSemisimpleModule_iff A A).mpr ⟨fun I => ?_⟩\n    obtain ⟨e, he, hIe⟩ := h I\n    refine ⟨Submodule.span A {1 - e}, ?_, ?_⟩\n    · rw [disjoint_iff_inf_le]\n      rintro r ⟨hr1, hr2⟩\n      -- `rw` could not match `Submodule.span R {e}` against the `R ∙ y` pattern\n      -- in `mem_span_singleton`.  Stating the intermediate type explicitly lets\n      -- the elaborator unify it instead of pattern-matching syntactically.\n      have hr1' : r ∈ Submodule.span A {e} := hIe ▸ hr1\n      obtain ⟨a, ha⟩ := Submodule.mem_span_singleton.mp hr1'\n      obtain ⟨b, hb⟩ := Submodule.mem_span_singleton.mp hr2\n      rw [smul_eq_mul] at ha hb\n      have h1 : r * e = r := by rw [← ha, mul_assoc, he.eq]\n      have h2 : r * e = 0 := by\n        rw [← hb, mul_assoc, sub_mul, one_mul, he.eq, sub_self, mul_zero]\n      rw [h1] at h2\n      simpa using h2\n    · rw [codisjoint_iff_le_sup]\n      intro r _\n      have hr : r = r * e + r * (1 - e) := by\n        rw [mul_sub, mul_one]; abel\n      rw [hr]\n      refine Submodule.add_mem_sup ?_ ?_\n      · rw [hIe, Submodule.mem_span_singleton]; exact ⟨r, by rw [smul_eq_mul]⟩\n      · rw [Submodule.mem_span_singleton]; exact ⟨r, by rw [smul_eq_mul]⟩\n",
+    "source": {
+      "university": "University of Oregon",
+      "term": "Fall",
+      "year": "2024",
+      "problem": "Part III, Problem 1"
+    },
+    "parent_id": "isSemisimpleRing_iff_forall_leftIdeal_span_idempotent",
+    "transformation_type": "alpha_rename"
+  },
+  {
+    "id": "006",
+    "field": "Ring Theory",
+    "latex_theorem": "Let $R$ be a commutative ring. Every nilpotent element of $R$ lies in the Jacobson radical $J(R)$.",
+    "latex_proof": "Recall that $J(R)$ is the intersection of all maximal ideals of $R$. Let $x \\in R$ be nilpotent, say $x^{n} = 0$ for some $n \\ge 1$, and let $\\mathfrak{m}$ be any maximal ideal of $R$.\n\nSince $R$ is commutative, $\\mathfrak{m}$ is a maximal ideal and hence prime. We have $x^{n} = 0 \\in \\mathfrak{m}$. By primeness of $\\mathfrak{m}$ and induction on $n$: if $n = 1$ then $x \\in \\mathfrak{m}$ directly; if $n > 1$ then $x \\cdot x^{n-1} \\in \\mathfrak{m}$ forces $x \\in \\mathfrak{m}$ or $x^{n-1} \\in \\mathfrak{m}$, and in the latter case we conclude $x \\in \\mathfrak{m}$ by the inductive hypothesis.\n\nThus $x$ lies in every maximal ideal of $R$, i.e. $x \\in J(R)$. $\\blacksquare$",
+    "lean_theorem": "theorem isNilpotent_mem_jacobson_bot_l2 {A : Type*} [CommRing A] {u : A}\n    (hu : IsNilpotent u) : u ∈ (⊥ : Ideal A).jacobson",
+    "lean_proof": "import Mathlib\n\ntheorem isNilpotent_mem_jacobson_bot_l2 {A : Type*} [CommRing A] {u : A}\n    (hu : IsNilpotent u) : u ∈ (⊥ : Ideal A).jacobson := by\n  rw [Ideal.jacobson, Ideal.mem_sInf]\n  rintro M ⟨-, hM⟩\n  obtain ⟨n, hn⟩ := hu\n  have hprime : M.IsPrime := hM.isPrime\n  refine hprime.mem_of_pow_mem n ?_\n  rw [hn]\n  exact M.zero_mem\n",
+    "source": {
+      "university": "University of Oregon",
+      "term": "Fall",
+      "year": "2020",
+      "problem": "Problem 4(i)"
+    },
+    "parent_id": "isNilpotent_mem_jacobson_bot",
+    "transformation_type": "alpha_rename"
+  },
+  {
+    "id": "007",
+    "field": "Ring Theory",
+    "latex_theorem": "Let $R$ be a commutative Noetherian ring and let $J = J(R)$ be its Jacobson radical. If $J^{n} = J^{n+1}$ for some $n \\ge 0$, then $J^{n} = 0$.",
+    "latex_proof": "The ideal $J^{n}$ is a submodule of $R$, and since $R$ is Noetherian every ideal of $R$ is a finitely generated $R$-module; in particular $J^{n}$ is a finitely generated $R$-module.\n\nMoreover\n\\[ J \\cdot J^{n} = J^{n+1} = J^{n} , \\]\nso $J^{n} \\subseteq J \\cdot J^{n}$.\n\nNakayama's lemma states: if $V$ is a finitely generated $R$-module and $I$ is an ideal contained in the Jacobson radical of $R$ with $IV = V$, then $V = 0$. Apply this with $V = J^{n}$ and $I = J$; the hypothesis $J \\subseteq J(R)$ is satisfied by definition. We conclude $J^{n} = 0$. $\\blacksquare$",
+    "lean_theorem": "theorem jacobson_pow_eq_bot_of_pow_eq_pow_succ_l2\n    {A : Type*} [CommRing A] [IsNoetherianRing A] (u : ℕ)\n    (hu : (Ideal.jacobson (⊥ : Ideal A)) ^ u = (Ideal.jacobson (⊥ : Ideal A)) ^ (u + 1)) :\n    (Ideal.jacobson (⊥ : Ideal A)) ^ u = ⊥",
+    "lean_proof": "import Mathlib\n\ntheorem jacobson_pow_eq_bot_of_pow_eq_pow_succ_l2\n    {A : Type*} [CommRing A] [IsNoetherianRing A] (u : ℕ)\n    (hu : (Ideal.jacobson (⊥ : Ideal A)) ^ u = (Ideal.jacobson (⊥ : Ideal A)) ^ (u + 1)) :\n    (Ideal.jacobson (⊥ : Ideal A)) ^ u = ⊥ := by\n  set J := Ideal.jacobson (⊥ : Ideal A) with hJ\n  have hfg : (J ^ u).FG := IsNoetherian.noetherian _\n  have hle : J ^ u ≤ J • J ^ u := by\n    rw [Ideal.smul_eq_mul, ← pow_succ']\n    exact le_of_eq hu\n  exact Submodule.eq_bot_of_le_smul_of_le_jacobson_bot J (J ^ u) hfg hle le_rfl\n",
+    "source": {
+      "university": "University of Oregon",
+      "term": "Fall",
+      "year": "2020",
+      "problem": "Problem 4(v)"
+    },
+    "parent_id": "jacobson_pow_eq_bot_of_pow_eq_pow_succ",
+    "transformation_type": "alpha_rename"
+  },
+  {
+    "id": "008",
+    "field": "Algebraic Geometry",
+    "latex_theorem": "Let $F$ be a field, let $R = F[x_1,\\dots,x_n]$, and for ideals $I, J \\subseteq R$ let $(I : J) = \\{ r \\in R \\mid rJ \\subseteq I \\}$. Then $\\mathcal{V}(I : J) \\supseteq \\mathcal{V}(I) \\setminus \\mathcal{V}(J)$.",
+    "latex_proof": "Let $a \\in \\mathcal{V}(I) \\setminus \\mathcal{V}(J)$ and let $r \\in (I : J)$; we must show $r(a) = 0$.\n\nSince $a \\notin \\mathcal{V}(J)$, there exists $g \\in J$ with $g(a) \\ne 0$.\n\nSince $r \\in (I : J)$ and $g \\in J$, we have $rg \\in I$. Since $a \\in \\mathcal{V}(I)$, every element of $I$ vanishes at $a$, so\n\\[ r(a)\\, g(a) = (rg)(a) = 0 . \\]\nAs $F$ is a field (in particular has no zero divisors) and $g(a) \\ne 0$, we conclude $r(a) = 0$.\n\nSince $r \\in (I:J)$ was arbitrary, $a \\in \\mathcal{V}(I:J)$. $\\blacksquare$",
+    "lean_theorem": "theorem eval_eq_zero_of_mem_colon_l2 {A : Type*} [Field A] {A₁ : Type*} (u₂ : A₁ → A) (u u₁ : Ideal (MvPolynomial A₁ A)) (hu : ∀ f ∈ u, MvPolynomial.eval u₂ f = 0) (hu₁ : ∃ g ∈ u₁, MvPolynomial.eval u₂ g ≠ 0) :\n    ∀ r ∈ u.colon u₁, MvPolynomial.eval u₂ r = 0",
+    "lean_proof": "import Mathlib\n\ntheorem eval_eq_zero_of_mem_colon_l2 {A : Type*} [Field A] {A₁ : Type*} (u₂ : A₁ → A) (u u₁ : Ideal (MvPolynomial A₁ A)) (hu : ∀ f ∈ u, MvPolynomial.eval u₂ f = 0) (hu₁ : ∃ g ∈ u₁, MvPolynomial.eval u₂ g ≠ 0) :\n    ∀ r ∈ u.colon u₁, MvPolynomial.eval u₂ r = 0 := by\n  obtain ⟨g, hgJ, hg⟩ := hu₁\n  intro r hr\n  have hrg : r * g ∈ u := by\n    have := Submodule.mem_colon.mp hr g hgJ\n    simpa [smul_eq_mul] using this\n  have : MvPolynomial.eval u₂ r * MvPolynomial.eval u₂ g = 0 := by\n    rw [← map_mul]\n    exact hu _ hrg\n  rcases mul_eq_zero.mp this with h | h\n  · exact h\n  · exact absurd h hg\n",
+    "source": {
+      "university": "University of Oregon",
+      "term": "Fall",
+      "year": "2020",
+      "problem": "Problem 5(i)"
+    },
+    "parent_id": "eval_eq_zero_of_mem_colon",
+    "transformation_type": "alpha_rename+hypothesis_reorder"
+  },
+  {
+    "id": "009",
+    "field": "Commutative Algebra",
+    "latex_theorem": "Let $R$ be a commutative ring, let $I \\subseteq R$ be a prime ideal and let $J \\subseteq R$ be an ideal. If $J \\not\\subseteq I$, then $(I : J) = I$; if $J \\subseteq I$, then $(I : J) \\supseteq I$ and in general the colon ideal is larger. In particular, for the prime ideal $I = (y - x^{2}) \\subseteq F[x,y]$ and any ideal $J$ with $J \\not\\subseteq I$, one has $(I:J) = I$, so $F[x,y]/(I:J)$ is never a nonzero finite-dimensional $F$-algebra.",
+    "latex_proof": "Assume $J \\not\\subseteq I$ and pick $j \\in J \\setminus I$.\n\nFirst, $I \\subseteq (I : J)$: if $r \\in I$ then $rJ \\subseteq I$ because $I$ is an ideal.\n\nConversely, let $r \\in (I : J)$. Then $rj \\in I$. Since $I$ is prime and $j \\notin I$, we conclude $r \\in I$. Hence $(I : J) \\subseteq I$, and therefore $(I : J) = I$.\n\nFor the application, $I = (y - x^{2})$ is prime in $F[x,y]$: the quotient $F[x,y]/(y-x^{2}) \\cong F[x]$ (substitute $y = x^{2}$) is an integral domain. If $J \\subseteq I$ then $(I:J) = F[x,y]$ and the quotient is the zero ring. If $J \\not\\subseteq I$ then by the above $(I:J) = I$, and $F[x,y]/I \\cong F[x]$ is infinite-dimensional over $F$. In either case $F[x,y]/(I:J)$ is either zero or infinite-dimensional, so it is never nonzero and finite-dimensional. $\\blacksquare$",
+    "lean_theorem": "theorem colon_eq_self_of_isPrime_of_not_le_l2 {A : Type*} [CommRing A] (u u₁ : Ideal A) (hu₁ : ¬ u₁ ≤ u) (hu : u.IsPrime) : u.colon u₁ = u",
+    "lean_proof": "import Mathlib\n\ntheorem colon_eq_self_of_isPrime_of_not_le_l2 {A : Type*} [CommRing A] (u u₁ : Ideal A) (hu₁ : ¬ u₁ ≤ u) (hu : u.IsPrime) : u.colon u₁ = u := by\n  obtain ⟨j, hjJ, hjI⟩ := Set.not_subset.mp hu₁\n  apply le_antisymm\n  · intro r hr\n    have hrj : r * j ∈ u := by\n      have := Submodule.mem_colon.mp hr j hjJ\n      simpa [smul_eq_mul] using this\n    rcases hu.mem_or_mem hrj with h | h\n    · exact h\n    · exact absurd h hjI\n  · intro r hr\n    rw [Submodule.mem_colon]\n    intro p _\n    simpa [smul_eq_mul] using u.mul_mem_right p hr\n",
+    "source": {
+      "university": "University of Oregon",
+      "term": "Fall",
+      "year": "2020",
+      "problem": "Problem 5(iv)"
+    },
+    "parent_id": "colon_eq_self_of_isPrime_of_not_le",
+    "transformation_type": "alpha_rename+hypothesis_reorder"
+  },
+  {
+    "id": "010",
+    "field": "Commutative Algebra",
+    "latex_theorem": "Let $R$ be a commutative ring and let $I_1, I_2 \\subseteq R$ be ideals with $I_1 + I_2 = R$. Put $I = I_1 \\cap I_2$. If $R/I_1 \\ne 0$ and $R/I_2 \\ne 0$, then the quotient ring $R/I$ contains a nontrivial idempotent, i.e. an element $e$ with $e^{2} = e$, $e \\ne 0$ and $e \\ne 1$.",
+    "latex_proof": "Since $I_1 + I_2 = R$ we may write $1 = a_1 + a_2$ with $a_1 \\in I_1$ and $a_2 \\in I_2$. Let $e \\in R/I$ be the class of $a_2$.\n\n\\emph{$e$ is idempotent.} We compute in $R$:\n\\[ a_2 - a_2^{2} = a_2(1 - a_2) = a_2 a_1 . \\]\nNow $a_2 a_1 \\in I_1$ (because $a_1 \\in I_1$) and $a_2 a_1 \\in I_2$ (because $a_2 \\in I_2$), hence $a_2 - a_2^{2} \\in I_1 \\cap I_2 = I$. Passing to $R/I$ gives $e = e^{2}$.\n\n\\emph{$e \\ne 0$.} Suppose $e = 0$, i.e. $a_2 \\in I$. Then $a_2 \\in I_1$, so $1 = a_1 + a_2 \\in I_1$ and $I_1 = R$, contradicting $R/I_1 \\ne 0$.\n\n\\emph{$e \\ne 1$.} Suppose $e = 1$, i.e. $1 - a_2 = a_1 \\in I$. Then $a_1 \\in I_2$, so $1 = a_1 + a_2 \\in I_2$ and $I_2 = R$, contradicting $R/I_2 \\ne 0$.\n\nHence $e$ is a nontrivial idempotent of $R/I$. (Geometrically: if an algebraic set $\\mathcal{V}$ is the disjoint union of two nonempty closed subsets $\\mathcal{V}_1, \\mathcal{V}_2$ with ideals $I_1, I_2$, then $I_1 + I_2$ lies in no maximal ideal, so $I_1 + I_2 = R$, and $I = I_1 \\cap I_2$ is the ideal of $\\mathcal{V}$; the above produces a nontrivial idempotent in the coordinate algebra $R/I$.) $\\blacksquare$",
+    "lean_theorem": "theorem exists_nontrivial_idempotent_of_isCoprime_l2 {A : Type*} [CommRing A] (u u₁ : Ideal A) (hu₁ : u ≠ ⊤) (hu₂ : u₁ ≠ ⊤) (hu : u ⊔ u₁ = ⊤) :\n    ∃ e : A ⧸ (u ⊓ u₁), IsIdempotentElem e ∧ e ≠ 0 ∧ e ≠ 1",
+    "lean_proof": "import Mathlib\n\ntheorem exists_nontrivial_idempotent_of_isCoprime_l2 {A : Type*} [CommRing A] (u u₁ : Ideal A) (hu₁ : u ≠ ⊤) (hu₂ : u₁ ≠ ⊤) (hu : u ⊔ u₁ = ⊤) :\n    ∃ e : A ⧸ (u ⊓ u₁), IsIdempotentElem e ∧ e ≠ 0 ∧ e ≠ 1 := by\n  have hmem : (1 : A) ∈ u ⊔ u₁ := by rw [hu]; trivial\n  obtain ⟨a₁, ha₁, a₂, ha₂, hsum⟩ := Submodule.mem_sup.mp hmem\n  refine ⟨Ideal.Quotient.mk _ a₂, ?_, ?_, ?_⟩\n  · -- idempotent\n    have hdiff : a₂ * a₂ - a₂ ∈ u ⊓ u₁ := by\n      have hfac : a₂ * a₂ - a₂ = -(a₂ * a₁) := by\n        -- `R` is a bare `CommRing` with no order, so `linarith` cannot apply.\n        -- `linear_combination` is the commutative-ring analogue.\n        have : a₁ = 1 - a₂ := by linear_combination hsum\n        rw [this]; ring\n      rw [hfac]\n      refine Submodule.neg_mem _ ⟨?_, ?_⟩\n      · exact u.mul_mem_left a₂ ha₁\n      · exact u₁.mul_mem_right a₁ ha₂\n    unfold IsIdempotentElem\n    rw [← map_mul, Ideal.Quotient.eq]\n    simpa using hdiff\n  · -- nonzero\n    intro hzero\n    rw [Ideal.Quotient.eq_zero_iff_mem] at hzero\n    apply hu₁\n    rw [Ideal.eq_top_iff_one, ← hsum]\n    exact u.add_mem ha₁ hzero.1\n  · -- not one\n    intro hone\n    apply hu₂\n    rw [Ideal.eq_top_iff_one, ← hsum]\n    have : (1 : A) - a₂ ∈ u ⊓ u₁ := by\n      rw [← Ideal.Quotient.eq_zero_iff_mem]\n      simp [hone]\n    have ha₁' : a₁ ∈ u₁ := by\n      have heq : a₁ = 1 - a₂ := by linear_combination hsum\n      rw [heq]; exact this.2\n    exact u₁.add_mem ha₁' ha₂\n",
+    "source": {
+      "university": "University of Oregon",
+      "term": "Fall",
+      "year": "2022",
+      "problem": "Part III, Problem 4"
+    },
+    "parent_id": "exists_nontrivial_idempotent_of_isCoprime",
+    "transformation_type": "alpha_rename+hypothesis_reorder"
+  },
+  {
+    "id": "011",
+    "field": "Algebraic Geometry",
+    "latex_theorem": "Let $F$ be an algebraically closed field, let $R = F[x_1,\\dots,x_n]$, let $I \\subseteq R$ be a radical ideal and let $J \\subseteq R$ be an ideal. Then $(I : J)$ is exactly the ideal of polynomials vanishing on $\\mathcal{V}(I) \\setminus \\mathcal{V}(J)$; equivalently, $\\mathcal{V}(I:J)$ is the Zariski closure of $\\mathcal{V}(I) \\setminus \\mathcal{V}(J)$.",
+    "latex_proof": "Write $\\mathcal{I}(S)$ for the ideal of polynomials vanishing on a set $S \\subseteq F^{n}$.\n\n\\emph{$(I:J) \\subseteq \\mathcal{I}(\\mathcal{V}(I) \\setminus \\mathcal{V}(J))$.} Let $r \\in (I:J)$ and $a \\in \\mathcal{V}(I) \\setminus \\mathcal{V}(J)$. Choose $g \\in J$ with $g(a) \\ne 0$. Then $rg \\in I$ and $a \\in \\mathcal{V}(I)$, so $r(a)g(a) = (rg)(a) = 0$, hence $r(a) = 0$.\n\n\\emph{$\\mathcal{I}(\\mathcal{V}(I) \\setminus \\mathcal{V}(J)) \\subseteq (I:J)$.} Let $r$ vanish on $\\mathcal{V}(I) \\setminus \\mathcal{V}(J)$ and let $g \\in J$; we must show $rg \\in I$. Let $a \\in \\mathcal{V}(I)$ be arbitrary. If $a \\in \\mathcal{V}(J)$ then $g(a) = 0$; otherwise $a \\in \\mathcal{V}(I) \\setminus \\mathcal{V}(J)$ and $r(a) = 0$. In both cases $(rg)(a) = r(a)g(a) = 0$. So $rg \\in \\mathcal{I}(\\mathcal{V}(I))$. By Hilbert's Nullstellensatz (here $F$ is algebraically closed) $\\mathcal{I}(\\mathcal{V}(I)) = \\sqrt{I}$, and $\\sqrt{I} = I$ since $I$ is radical. Hence $rg \\in I$. As $g \\in J$ was arbitrary, $r \\in (I:J)$.\n\nThe two inclusions give $(I:J) = \\mathcal{I}(\\mathcal{V}(I) \\setminus \\mathcal{V}(J))$. Applying $\\mathcal{V}$ and using $\\mathcal{V}(\\mathcal{I}(S)) = \\overline{S}$ for any $S \\subseteq F^{n}$, we get that $\\mathcal{V}(I:J)$ is the closure of $\\mathcal{V}(I) \\setminus \\mathcal{V}(J)$. $\\blacksquare$",
+    "lean_theorem": "theorem colon_eq_vanishingIdeal_sdiff_l2 {A : Type*} [Field A] [IsAlgClosed A]\n    {A₁ : Type*} [Finite A₁] (u u₁ : Ideal (MvPolynomial A₁ A)) (hu : u.IsRadical) :\n    u.colon u₁ =\n      MvPolynomial.vanishingIdeal A\n        (MvPolynomial.zeroLocus A u \\ MvPolynomial.zeroLocus A u₁)",
+    "lean_proof": "import Mathlib\n\ntheorem colon_eq_vanishingIdeal_sdiff_l2 {A : Type*} [Field A] [IsAlgClosed A]\n    {A₁ : Type*} [Finite A₁] (u u₁ : Ideal (MvPolynomial A₁ A)) (hu : u.IsRadical) :\n    u.colon u₁ =\n      MvPolynomial.vanishingIdeal A\n        (MvPolynomial.zeroLocus A u \\ MvPolynomial.zeroLocus A u₁) := by\n  apply le_antisymm\n  · intro r hr\n    rw [MvPolynomial.mem_vanishingIdeal_iff]\n    rintro a ⟨haI, haJ⟩\n    rw [MvPolynomial.mem_zeroLocus_iff] at haI\n    rw [MvPolynomial.mem_zeroLocus_iff] at haJ\n    push Not at haJ\n    obtain ⟨g, hgJ, hg⟩ := haJ\n    have hrg : r * g ∈ u := by\n      simpa [smul_eq_mul] using Submodule.mem_colon.mp hr g hgJ\n    have : MvPolynomial.eval a r * MvPolynomial.eval a g = 0 := by\n      rw [← map_mul]; exact haI _ hrg\n    rcases mul_eq_zero.mp this with h | h\n    · exact h\n    · exact absurd h hg\n  · intro r hr\n    rw [Submodule.mem_colon]\n    intro g hgJ\n    rw [smul_eq_mul]\n    have hvan : r * g ∈ MvPolynomial.vanishingIdeal A (MvPolynomial.zeroLocus A u) := by\n      rw [MvPolynomial.mem_vanishingIdeal_iff]\n      intro a haI\n      by_cases hJ : a ∈ MvPolynomial.zeroLocus A u₁\n      · rw [MvPolynomial.mem_zeroLocus_iff] at hJ\n        rw [map_mul, hJ g hgJ, mul_zero]\n      · have := (MvPolynomial.mem_vanishingIdeal_iff.mp hr) a ⟨haI, hJ⟩\n        rw [map_mul, this, zero_mul]\n    rw [MvPolynomial.vanishingIdeal_zeroLocus_eq_radical] at hvan\n    exact hu hvan\n",
+    "source": {
+      "university": "University of Oregon",
+      "term": "Fall",
+      "year": "2020",
+      "problem": "Problem 5(ii)"
+    },
+    "parent_id": "colon_eq_vanishingIdeal_sdiff",
+    "transformation_type": "alpha_rename"
+  },
+  {
+    "id": "012",
+    "field": "Ring Theory",
+    "latex_theorem": "Let $A$ be an algebra over a commutative ring $F$ and let $(\\cdot,\\cdot) : A \\times A \\to F$ be an $F$-bilinear form that is symmetric, $(a,b) = (b,a)$, and associative, $(ab,c) = (a,bc)$. Then for all $a,b,c \\in A$ one has $([a,b],c) = (a,[b,c])$, where $[x,y] = xy - yx$ is the commutator.",
+    "latex_proof": "We compute directly, using bilinearity to expand the commutators.\n\nFirst,\n\\[ ([a,b],c) = (ab - ba,\\, c) = (ab, c) - (ba, c) . \\]\nBy associativity, $(ab,c) = (a,bc)$.\n\nFor the second term, apply symmetry, then associativity, then symmetry again:\n\\[ (ba, c) = (c, ba) = (cb, a) = (a, cb) , \\]\nwhere the middle equality is associativity $(c \\cdot b, a) = (c, b \\cdot a)$ read from right to left.\n\nSubstituting,\n\\[ ([a,b],c) = (a,bc) - (a,cb) = (a,\\, bc - cb) = (a,[b,c]) , \\]\nthe second-to-last step again by bilinearity in the second variable. $\\blacksquare$",
+    "lean_theorem": "theorem invariant_form_commutator_l2 {A₁ A₂ : Type*} [CommRing A₁] [Ring A₂] [Algebra A₁ A₂] (u₁ u₂ u₃ : A₂) (u : A₂ →ₗ[A₁] A₂ →ₗ[A₁] A₁) (hu₁ : ∀ x y z : A₂, u (x * y) z = u x (y * z)) (hu : ∀ x y : A₂, u x y = u y x) :\n    u (u₁ * u₂ - u₂ * u₁) u₃ = u u₁ (u₂ * u₃ - u₃ * u₂)",
+    "lean_proof": "import Mathlib\n\ntheorem invariant_form_commutator_l2 {A₁ A₂ : Type*} [CommRing A₁] [Ring A₂] [Algebra A₁ A₂] (u₁ u₂ u₃ : A₂) (u : A₂ →ₗ[A₁] A₂ →ₗ[A₁] A₁) (hu₁ : ∀ x y z : A₂, u (x * y) z = u x (y * z)) (hu : ∀ x y : A₂, u x y = u y x) :\n    u (u₁ * u₂ - u₂ * u₁) u₃ = u u₁ (u₂ * u₃ - u₃ * u₂) := by\n  have h1 : u (u₂ * u₁) u₃ = u u₁ (u₃ * u₂) := by\n    rw [hu (u₂ * u₁) u₃, ← hu₁ u₃ u₂ u₁, hu (u₃ * u₂) u₁]\n  rw [map_sub, LinearMap.sub_apply, hu₁, h1, ← map_sub]\n",
+    "source": {
+      "university": "University of Oregon",
+      "term": "Fall",
+      "year": "2019",
+      "problem": "Problem 2(b)"
+    },
+    "parent_id": "invariant_form_commutator",
+    "transformation_type": "alpha_rename+hypothesis_reorder"
+  },
+  {
+    "id": "013",
+    "field": "Ring Theory",
+    "latex_theorem": "Let $A$ be a finite-dimensional algebra over a field $F$. For $a \\in A$ let $L_a : A \\to A$ denote left multiplication by $a$, and define $(a,b) := \\operatorname{trace}(L_a \\circ L_b)$. Then this bilinear form is symmetric, $(a,b) = (b,a)$, and associative, $(ab,c) = (a,bc)$, for all $a,b,c \\in A$.",
+    "latex_proof": "\\emph{Symmetry.} For any two linear operators $X, Y$ on a finite-dimensional vector space one has $\\operatorname{trace}(XY) = \\operatorname{trace}(YX)$. Applying this with $X = L_a$ and $Y = L_b$ gives\n\\[ (a,b) = \\operatorname{trace}(L_a L_b) = \\operatorname{trace}(L_b L_a) = (b,a) . \\]\n\n\\emph{Associativity.} The key identity is $L_a \\circ L_b = L_{ab}$: indeed, for any $x \\in A$,\n\\[ (L_a \\circ L_b)(x) = a(bx) = (ab)x = L_{ab}(x) , \\]\nusing associativity of multiplication in $A$. Hence\n\\[ (ab, c) = \\operatorname{trace}(L_{ab} L_c) = \\operatorname{trace}(L_a L_b L_c) = \\operatorname{trace}(L_a L_{bc}) = (a, bc) . \\]\n$\\blacksquare$",
+    "lean_theorem": "theorem traceForm_symm_and_assoc_l2 {A₁ A₂ : Type*} [Field A₁] [Ring A₂] [Algebra A₁ A₂]\n    [Module.Finite A₁ A₂] [Module.Free A₁ A₂] (u u₁ u₂ : A₂) :\n    LinearMap.trace A₁ A₂ (LinearMap.mulLeft A₁ u * LinearMap.mulLeft A₁ u₁)\n        = LinearMap.trace A₁ A₂ (LinearMap.mulLeft A₁ u₁ * LinearMap.mulLeft A₁ u)\n      ∧ LinearMap.trace A₁ A₂ (LinearMap.mulLeft A₁ (u * u₁) * LinearMap.mulLeft A₁ u₂)\n        = LinearMap.trace A₁ A₂ (LinearMap.mulLeft A₁ u * LinearMap.mulLeft A₁ (u₁ * u₂))",
+    "lean_proof": "import Mathlib\n\ntheorem traceForm_symm_and_assoc_l2 {A₁ A₂ : Type*} [Field A₁] [Ring A₂] [Algebra A₁ A₂]\n    [Module.Finite A₁ A₂] [Module.Free A₁ A₂] (u u₁ u₂ : A₂) :\n    LinearMap.trace A₁ A₂ (LinearMap.mulLeft A₁ u * LinearMap.mulLeft A₁ u₁)\n        = LinearMap.trace A₁ A₂ (LinearMap.mulLeft A₁ u₁ * LinearMap.mulLeft A₁ u)\n      ∧ LinearMap.trace A₁ A₂ (LinearMap.mulLeft A₁ (u * u₁) * LinearMap.mulLeft A₁ u₂)\n        = LinearMap.trace A₁ A₂ (LinearMap.mulLeft A₁ u * LinearMap.mulLeft A₁ (u₁ * u₂)) := by\n  constructor\n  · exact LinearMap.trace_mul_comm A₁ _ _\n  · congr 1\n    simp [LinearMap.mulLeft_mul, Module.End.mul_eq_comp, LinearMap.comp_assoc]\n",
+    "source": {
+      "university": "University of Oregon",
+      "term": "Winter",
+      "year": "2021",
+      "problem": "Problem 3(a)"
+    },
+    "parent_id": "traceForm_symm_and_assoc",
+    "transformation_type": "alpha_rename"
+  },
+  {
+    "id": "014",
+    "field": "Ring Theory",
+    "latex_theorem": "Let $A$ be an algebra over a commutative ring $F$ equipped with a symmetric associative $F$-bilinear form $(\\cdot,\\cdot)$, and set $\\operatorname{rad} A := \\{a \\in A \\mid (a,b) = 0 \\text{ for all } b \\in A\\}$. If $a \\in \\operatorname{rad} A$ and $c \\in A$, then $ac \\in \\operatorname{rad} A$ and $ca \\in \\operatorname{rad} A$; together with closure under addition and scalar multiplication (immediate from bilinearity), $\\operatorname{rad} A$ is a two-sided ideal of $A$.",
+    "latex_proof": "Let $a \\in \\operatorname{rad} A$, so $(a,x) = 0$ for every $x \\in A$, and let $c \\in A$.\n\n\\emph{$ac \\in \\operatorname{rad} A$.} For arbitrary $b \\in A$, associativity gives\n\\[ (ac, b) = (a, cb) = 0 , \\]\nthe last equality because $cb \\in A$ and $a \\in \\operatorname{rad} A$.\n\n\\emph{$ca \\in \\operatorname{rad} A$.} For arbitrary $b \\in A$, using symmetry, then associativity read backwards, then symmetry again:\n\\[ (ca, b) = (b, ca) = (bc, a) = (a, bc) = 0 . \\]\n\nFinally, $\\operatorname{rad} A$ is an $F$-submodule: if $(a,b) = 0 = (a',b)$ for all $b$ then $(a + \\lambda a', b) = (a,b) + \\lambda(a',b) = 0$ for all $b$, by bilinearity in the first variable. Hence $\\operatorname{rad} A$ is closed under addition, scalar multiplication, and left and right multiplication by arbitrary elements of $A$, i.e. it is a two-sided ideal. $\\blacksquare$",
+    "lean_theorem": "theorem radical_form_two_sided_l2 {A₁ A₂ : Type*} [CommRing A₁] [Ring A₂] [Algebra A₁ A₂] (u : A₂ →ₗ[A₁] A₂ →ₗ[A₁] A₁) {u₁ : A₂} (hu₂ : ∀ b : A₂, u u₁ b = 0) (hu₁ : ∀ x y z : A₂, u (x * y) z = u x (y * z)) (hu : ∀ x y : A₂, u x y = u y x) (u₂ : A₂) :\n    (∀ b : A₂, u (u₁ * u₂) b = 0) ∧ (∀ b : A₂, u (u₂ * u₁) b = 0)",
+    "lean_proof": "import Mathlib\n\ntheorem radical_form_two_sided_l2 {A₁ A₂ : Type*} [CommRing A₁] [Ring A₂] [Algebra A₁ A₂] (u : A₂ →ₗ[A₁] A₂ →ₗ[A₁] A₁) {u₁ : A₂} (hu₂ : ∀ b : A₂, u u₁ b = 0) (hu₁ : ∀ x y z : A₂, u (x * y) z = u x (y * z)) (hu : ∀ x y : A₂, u x y = u y x) (u₂ : A₂) :\n    (∀ b : A₂, u (u₁ * u₂) b = 0) ∧ (∀ b : A₂, u (u₂ * u₁) b = 0) := by\n  constructor\n  · intro b\n    rw [hu₁]\n    exact hu₂ (u₂ * b)\n  · intro b\n    rw [hu (u₂ * u₁) b, ← hu₁ b u₂ u₁, hu (b * u₂) u₁]\n    exact hu₂ (b * u₂)\n",
+    "source": {
+      "university": "University of Oregon",
+      "term": "Winter",
+      "year": "2021",
+      "problem": "Problem 3(b)"
+    },
+    "parent_id": "radical_form_two_sided",
+    "transformation_type": "alpha_rename+hypothesis_reorder"
+  },
+  {
+    "id": "015",
+    "field": "Linear Algebra",
+    "latex_theorem": "Let $F$ be a field and let $U$ and $V$ be vector spaces over $F$. Then there is an isomorphism of vector spaces $\\operatorname{Hom}_F(U, V^{*}) \\cong \\operatorname{Hom}_F(V, U^{*})$, where $W^{*} = \\operatorname{Hom}_F(W,F)$ denotes the dual space.",
+    "latex_proof": "Both sides are naturally identified with the space of $F$-bilinear maps $U \\times V \\to F$.\n\nExplicitly, define\n\\[ \\alpha : \\operatorname{Hom}_F(U, V^{*}) \\to \\operatorname{Hom}_F(V, U^{*}), \\qquad \\alpha(f)(v)(u) := f(u)(v) , \\]\nand\n\\[ \\beta : \\operatorname{Hom}_F(V, U^{*}) \\to \\operatorname{Hom}_F(U, V^{*}), \\qquad \\beta(g)(u)(v) := g(v)(u) . \\]\nOne checks immediately that $\\alpha(f)(v)$ is $F$-linear in $u$ (since $f$ is linear and each $f(u)$ is linear), that $\\alpha(f)$ is linear in $v$, and that $\\alpha$ itself is $F$-linear; similarly for $\\beta$.\n\nThese maps are mutually inverse: for $f \\in \\operatorname{Hom}_F(U,V^{*})$ and all $u \\in U$, $v \\in V$,\n\\[ \\beta(\\alpha(f))(u)(v) = \\alpha(f)(v)(u) = f(u)(v) , \\]\nso $\\beta \\circ \\alpha = \\mathrm{id}$, and symmetrically $\\alpha \\circ \\beta = \\mathrm{id}$.\n\nHence $\\alpha$ is an isomorphism, so $\\operatorname{Hom}_F(U, V^{*}) \\cong \\operatorname{Hom}_F(V, U^{*})$. (Equivalently, in the formulation of the source, $f \\mapsto f^{*} \\circ \\iota_V$ with $\\iota_V : V \\to V^{**}$ the canonical embedding is exactly the map $\\alpha$ above.) $\\blacksquare$",
+    "lean_theorem": "theorem hom_dual_equiv_hom_dual_l2 (A A₁ A₂ : Type*) [Field A] [AddCommGroup A₁] [Module A A₁]\n    [AddCommGroup A₂] [Module A A₂] :\n    Nonempty ((A₁ →ₗ[A] Module.Dual A A₂) ≃ₗ[A] (A₂ →ₗ[A] Module.Dual A A₁))",
+    "lean_proof": "import Mathlib\n\ntheorem hom_dual_equiv_hom_dual_l2 (A A₁ A₂ : Type*) [Field A] [AddCommGroup A₁] [Module A A₁]\n    [AddCommGroup A₂] [Module A A₂] :\n    Nonempty ((A₁ →ₗ[A] Module.Dual A A₂) ≃ₗ[A] (A₂ →ₗ[A] Module.Dual A A₁)) :=\n  ⟨LinearMap.lflip⟩\n",
+    "source": {
+      "university": "University of Oregon",
+      "term": "Fall",
+      "year": "2017",
+      "problem": "Part II, Problem 1"
+    },
+    "parent_id": "hom_dual_equiv_hom_dual",
+    "transformation_type": "alpha_rename"
+  },
+  {
+    "id": "016",
+    "field": "Ring Theory",
+    "latex_theorem": "Let $\\varphi : R \\to S$ be a surjective homomorphism of commutative rings, and let $J(\\cdot)$ denote the Jacobson radical, i.e. the intersection of all maximal ideals. Then $\\varphi(J(R)) \\subseteq J(S)$.",
+    "latex_proof": "Let $x \\in J(R)$; we must show $\\varphi(x)$ lies in every maximal ideal of $S$.\n\nLet $\\mathfrak{m} \\subseteq S$ be a maximal ideal and consider $\\varphi^{-1}(\\mathfrak{m}) \\subseteq R$. Since $\\varphi$ is surjective, the induced map\n\\[ R/\\varphi^{-1}(\\mathfrak{m}) \\longrightarrow S/\\mathfrak{m} \\]\nis an isomorphism of rings. Indeed, $\\varphi$ induces a surjection $R \\to S/\\mathfrak{m}$ whose kernel is exactly $\\varphi^{-1}(\\mathfrak{m})$, so the first isomorphism theorem applies. As $\\mathfrak{m}$ is maximal, $S/\\mathfrak{m}$ is a field, hence $R/\\varphi^{-1}(\\mathfrak{m})$ is a field, hence $\\varphi^{-1}(\\mathfrak{m})$ is a maximal ideal of $R$.\n\nSince $x \\in J(R)$ and $\\varphi^{-1}(\\mathfrak{m})$ is maximal, we get $x \\in \\varphi^{-1}(\\mathfrak{m})$, i.e. $\\varphi(x) \\in \\mathfrak{m}$.\n\nAs $\\mathfrak{m}$ was an arbitrary maximal ideal of $S$, we conclude $\\varphi(x) \\in J(S)$. $\\blacksquare$",
+    "lean_theorem": "theorem map_jacobson_le_jacobson_of_surjective_l2 {A A₁ : Type*} [CommRing A] [CommRing A₁] {u₁ : A} (u : A →+* A₁) (hu₁ : u₁ ∈ (⊥ : Ideal A).jacobson) (hu : Function.Surjective u) :\n    u u₁ ∈ (⊥ : Ideal A₁).jacobson",
+    "lean_proof": "import Mathlib\n\ntheorem map_jacobson_le_jacobson_of_surjective_l2 {A A₁ : Type*} [CommRing A] [CommRing A₁] {u₁ : A} (u : A →+* A₁) (hu₁ : u₁ ∈ (⊥ : Ideal A).jacobson) (hu : Function.Surjective u) :\n    u u₁ ∈ (⊥ : Ideal A₁).jacobson := by\n  rw [Ideal.jacobson, Ideal.mem_sInf]\n  rintro m ⟨-, hm⟩\n  haveI : m.IsMaximal := hm\n  have hcomap : (Ideal.comap u m).IsMaximal := Ideal.comap_isMaximal_of_surjective u hu\n  rw [Ideal.jacobson, Ideal.mem_sInf] at hu₁\n  exact hu₁ ⟨bot_le, hcomap⟩\n",
+    "source": {
+      "university": "University of Southern California",
+      "term": "Spring",
+      "year": "2024",
+      "problem": "Problem 4"
+    },
+    "parent_id": "map_jacobson_le_jacobson_of_surjective",
+    "transformation_type": "alpha_rename+hypothesis_reorder"
+  },
+  {
+    "id": "017",
+    "field": "Commutative Algebra",
+    "latex_theorem": "Let $f, g \\in \\mathbb{C}[x_1,\\dots,x_n]$. Suppose that for every $z \\in \\mathbb{C}^{n}$ with $f(z) = 0$ one also has $g(z) = 0$. Then $f$ divides some power of $g$, i.e. there exists $m \\in \\mathbb{Z}_{\\ge 0}$ with $f \\mid g^{m}$.",
+    "latex_proof": "Consider the principal ideal $(f) \\subseteq \\mathbb{C}[x_1,\\dots,x_n]$ and its vanishing locus\n\\[ \\mathcal{V}((f)) = \\{ z \\in \\mathbb{C}^{n} \\mid h(z) = 0 \\text{ for all } h \\in (f) \\} = \\{ z \\in \\mathbb{C}^{n} \\mid f(z) = 0 \\} , \\]\nthe last equality because every $h \\in (f)$ is of the form $h = qf$, so $f(z) = 0$ implies $h(z) = 0$, while conversely $f \\in (f)$.\n\nBy hypothesis $g$ vanishes at every point of $\\mathcal{V}((f))$, i.e.\n\\[ g \\in \\mathcal{I}\\bigl(\\mathcal{V}((f))\\bigr) . \\]\n\nHilbert's Nullstellensatz (applicable since $\\mathbb{C}$ is algebraically closed) states that for any ideal $I$,\n\\[ \\mathcal{I}(\\mathcal{V}(I)) = \\sqrt{I} . \\]\nApplying this with $I = (f)$ gives $g \\in \\sqrt{(f)}$, which by definition of the radical means that there exists $m \\in \\mathbb{Z}_{\\ge 0}$ with $g^{m} \\in (f)$.\n\nFinally, $g^{m} \\in (f)$ says exactly that $g^{m} = qf$ for some polynomial $q$, i.e. $f \\mid g^{m}$. $\\blacksquare$",
+    "lean_theorem": "theorem dvd_pow_of_vanishes_on_zeroLocus_l2 {u : ℕ} (u₁ u₂ : MvPolynomial (Fin u) ℂ)\n    (hu : ∀ z : Fin u → ℂ, MvPolynomial.eval z u₁ = 0 → MvPolynomial.eval z u₂ = 0) :\n    ∃ m : ℕ, u₁ ∣ u₂ ^ m",
+    "lean_proof": "import Mathlib\n\ntheorem dvd_pow_of_vanishes_on_zeroLocus_l2 {u : ℕ} (u₁ u₂ : MvPolynomial (Fin u) ℂ)\n    (hu : ∀ z : Fin u → ℂ, MvPolynomial.eval z u₁ = 0 → MvPolynomial.eval z u₂ = 0) :\n    ∃ m : ℕ, u₁ ∣ u₂ ^ m := by\n  have hg : u₂ ∈ MvPolynomial.vanishingIdeal ℂ\n      (MvPolynomial.zeroLocus ℂ (Ideal.span {u₁} : Ideal (MvPolynomial (Fin u) ℂ))) := by\n    rw [MvPolynomial.mem_vanishingIdeal_iff]\n    intro z hz\n    rw [MvPolynomial.mem_zeroLocus_iff] at hz\n    exact hu z (hz u₁ (Ideal.subset_span (Set.mem_singleton u₁)))\n  rw [MvPolynomial.vanishingIdeal_zeroLocus_eq_radical, Ideal.mem_radical_iff] at hg\n  obtain ⟨m, hm⟩ := hg\n  exact ⟨m, Ideal.mem_span_singleton.mp hm⟩\n",
+    "source": {
+      "university": "University of Southern California",
+      "term": "Spring",
+      "year": "2024",
+      "problem": "Problem 3"
+    },
+    "parent_id": "dvd_pow_of_vanishes_on_zeroLocus",
+    "transformation_type": "alpha_rename"
+  },
+  {
+    "id": "018",
+    "field": "Group Theory",
+    "latex_theorem": "Let $G$ be a group and let $G' = \\langle [a,b] : a,b \\in G \\rangle$ be its commutator subgroup, where $[a,b] = aba^{-1}b^{-1}$. Then $G'$ is a normal subgroup of $G$ and the quotient $G/G'$ is abelian.",
+    "latex_proof": "\\emph{Normality.} It suffices to check that $G'$ is stable under conjugation. For $g \\in G$ and a generator $[a,b]$ of $G'$,\n\\[ g[a,b]g^{-1} = (gag^{-1})(gbg^{-1})(gag^{-1})^{-1}(gbg^{-1})^{-1} = [gag^{-1},\\, gbg^{-1}] \\in G' , \\]\nsince conjugation is an automorphism of $G$. As conjugation by $g$ is a homomorphism, it therefore carries the subgroup generated by all commutators into $G'$, so $gG'g^{-1} \\subseteq G'$ for every $g$, and applying this to $g^{-1}$ as well gives $gG'g^{-1} = G'$. Hence $G' \\trianglelefteq G$.\n\n\\emph{The quotient is abelian.} Let $aG', bG' \\in G/G'$. Then\n\\[ (aG')(bG')\\bigl((bG')(aG')\\bigr)^{-1} = (ab)(ba)^{-1}G' = ab\\,a^{-1}b^{-1}G' = [a,b]G' = G' , \\]\nbecause $[a,b] \\in G'$. Hence $(aG')(bG') = (bG')(aG')$, so $G/G'$ is abelian. $\\blacksquare$",
+    "lean_theorem": "theorem commutator_normal_and_quotient_comm_l2 (A : Type*) [Group A] :\n    (commutator A).Normal ∧ ∀ x y : A ⧸ commutator A, x * y = y * x",
+    "lean_proof": "import Mathlib\n\nopen scoped commutatorElement\n\ntheorem commutator_normal_and_quotient_comm_l2 (A : Type*) [Group A] :\n    (commutator A).Normal ∧ ∀ x y : A ⧸ commutator A, x * y = y * x := by\n  refine ⟨inferInstance, ?_⟩\n  intro x y\n  induction x using QuotientGroup.induction_on with\n  | H a =>\n    induction y using QuotientGroup.induction_on with\n    | H b =>\n      rw [← QuotientGroup.mk_mul, ← QuotientGroup.mk_mul, QuotientGroup.eq]\n      have hrw : (a * b)⁻¹ * (b * a) = ⁅b⁻¹, a⁻¹⁆ := by\n        rw [commutatorElement_def]; group\n      rw [hrw]\n      exact Subgroup.commutator_mem_commutator (Subgroup.mem_top _) (Subgroup.mem_top _)\n",
+    "source": {
+      "university": "University of Southern California",
+      "term": "Fall",
+      "year": "2023",
+      "problem": "Problem 6(a)"
+    },
+    "parent_id": "commutator_normal_and_quotient_comm",
+    "transformation_type": "alpha_rename"
+  },
+  {
+    "id": "019",
+    "field": "Group Theory",
+    "latex_theorem": "Let $G$ be a group and let $H \\trianglelefteq G$ be a normal subgroup such that $G/H$ is abelian. Then $H$ contains the commutator subgroup $G' = \\langle [a,b] : a,b \\in G\\rangle$.",
+    "latex_proof": "Since $G'$ is generated by the commutators $[a,b] = aba^{-1}b^{-1}$, it suffices to show that $[a,b] \\in H$ for all $a, b \\in G$.\n\nFix $a, b \\in G$ and work in the quotient $G/H$, writing $\\bar{x}$ for the image of $x \\in G$. Since $G/H$ is abelian,\n\\[ \\overline{[a,b]} = \\bar{a}\\bar{b}\\bar{a}^{-1}\\bar{b}^{-1} = \\bar{b}\\bar{a}\\bar{a}^{-1}\\bar{b}^{-1} = \\bar{b}\\bar{b}^{-1} = \\bar{1} , \\]\nwhere the second equality uses commutativity to swap $\\bar{a}$ and $\\bar{b}$.\n\nThus $[a,b]$ lies in the kernel of the quotient map $G \\to G/H$, which is $H$. Hence every commutator lies in $H$, and since $H$ is a subgroup it contains the subgroup they generate: $G' \\le H$. $\\blacksquare$",
+    "lean_theorem": "theorem commutator_le_of_quotient_comm_l2 {A : Type*} [Group A] (u : Subgroup A) [u.Normal]\n    (hu : ∀ x y : A ⧸ u, x * y = y * x) : commutator A ≤ u",
+    "lean_proof": "import Mathlib\n\ntheorem commutator_le_of_quotient_comm_l2 {A : Type*} [Group A] (u : Subgroup A) [u.Normal]\n    (hu : ∀ x y : A ⧸ u, x * y = y * x) : commutator A ≤ u := by\n  rw [commutator_def, Subgroup.commutator_le]\n  intro a _ b _\n  rw [← QuotientGroup.eq_one_iff, commutatorElement_def]\n  simp only [QuotientGroup.mk_mul, QuotientGroup.mk_inv]\n  rw [hu ((a : A ⧸ u)) ((b : A ⧸ u))]\n  group\n",
+    "source": {
+      "university": "University of Southern California",
+      "term": "Fall",
+      "year": "2023",
+      "problem": "Problem 6(b)"
+    },
+    "parent_id": "commutator_le_of_quotient_comm",
+    "transformation_type": "alpha_rename"
+  },
+  {
+    "id": "020",
+    "field": "Commutative Algebra",
+    "latex_theorem": "Let $R$ be a commutative local ring with unique maximal ideal $\\mathfrak{m}$. If $x \\in \\mathfrak{m}$, then $1 - x$ is invertible in $R$.",
+    "latex_proof": "Suppose for contradiction that $1 - x$ is not invertible. In a commutative ring, every non-unit is contained in some maximal ideal; since $R$ is local, its only maximal ideal is $\\mathfrak{m}$, so $1 - x \\in \\mathfrak{m}$.\n\nBut $x \\in \\mathfrak{m}$ as well, and $\\mathfrak{m}$ is closed under addition, so\n\\[ 1 = (1 - x) + x \\in \\mathfrak{m} . \\]\nAn ideal containing $1$ is the whole ring, so $\\mathfrak{m} = R$, contradicting the fact that a maximal ideal is proper.\n\nHence $1 - x$ is invertible. $\\blacksquare$",
+    "lean_theorem": "theorem isUnit_one_sub_of_mem_maximalIdeal_l2 {A : Type*} [CommRing A] [IsLocalRing A]\n    {u : A} (hu : u ∈ IsLocalRing.maximalIdeal A) : IsUnit (1 - u)",
+    "lean_proof": "import Mathlib\n\ntheorem isUnit_one_sub_of_mem_maximalIdeal_l2 {A : Type*} [CommRing A] [IsLocalRing A]\n    {u : A} (hu : u ∈ IsLocalRing.maximalIdeal A) : IsUnit (1 - u) := by\n  by_contra h\n  have h1 : (1 - u) ∈ IsLocalRing.maximalIdeal A :=\n    (IsLocalRing.mem_maximalIdeal _).mpr (mem_nonunits_iff.mpr h)\n  have hone : (1 : A) ∈ IsLocalRing.maximalIdeal A := by\n    have := Ideal.add_mem (IsLocalRing.maximalIdeal A) h1 hu\n    simpa using this\n  exact (Ideal.ne_top_iff_one _).mp\n    (IsLocalRing.maximalIdeal.isMaximal A).ne_top hone\n",
+    "source": {
+      "university": "University of Southern California",
+      "term": "Fall",
+      "year": "2021",
+      "problem": "Problem 4 (first part)"
+    },
+    "parent_id": "isUnit_one_sub_of_mem_maximalIdeal",
+    "transformation_type": "alpha_rename"
+  },
+  {
+    "id": "021",
+    "field": "Commutative Algebra",
+    "latex_theorem": "Let $R$ be a commutative Noetherian local ring with maximal ideal $\\mathfrak{m}$, and let $\\mathfrak{a} \\subsetneq R$ be a proper ideal such that $\\mathfrak{a}^{2} = \\mathfrak{a}$. Then $\\mathfrak{a} = 0$.",
+    "latex_proof": "Since $R$ is Noetherian, the ideal $\\mathfrak{a}$ is finitely generated as an $R$-module.\n\nSince $\\mathfrak{a}$ is a proper ideal and $R$ is local, $\\mathfrak{a}$ is contained in the unique maximal ideal: $\\mathfrak{a} \\subseteq \\mathfrak{m}$. Therefore\n\\[ \\mathfrak{a} = \\mathfrak{a}\\,\\mathfrak{a} \\subseteq \\mathfrak{m}\\,\\mathfrak{a} \\subseteq \\mathfrak{a} , \\]\nwhere the first equality is the hypothesis, the middle inclusion uses $\\mathfrak{a} \\subseteq \\mathfrak{m}$, and the last holds because $\\mathfrak{a}$ is an ideal. Hence $\\mathfrak{m}\\,\\mathfrak{a} = \\mathfrak{a}$.\n\nIn a local ring the Jacobson radical is exactly $\\mathfrak{m}$. Nakayama's lemma states that if $V$ is a finitely generated module and $I$ is an ideal contained in the Jacobson radical with $IV = V$, then $V = 0$. Applying this with $V = \\mathfrak{a}$ and $I = \\mathfrak{m}$ gives $\\mathfrak{a} = 0$.\n\n(The properness hypothesis is essential: $\\mathfrak{a} = R$ satisfies $\\mathfrak{a}^{2} = \\mathfrak{a}$ but is nonzero whenever $R \\neq 0$.) $\\blacksquare$",
+    "lean_theorem": "theorem ideal_eq_bot_of_sq_eq_self_l2 {A : Type*} [CommRing A] [IsLocalRing A] [IsNoetherianRing A] (u : Ideal A) (hu₁ : u * u = u) (hu : u ≠ ⊤) : u = ⊥",
+    "lean_proof": "import Mathlib\n\ntheorem ideal_eq_bot_of_sq_eq_self_l2 {A : Type*} [CommRing A] [IsLocalRing A] [IsNoetherianRing A] (u : Ideal A) (hu₁ : u * u = u) (hu : u ≠ ⊤) : u = ⊥ := by\n  have hfg : (u : Submodule A A).FG := IsNoetherian.noetherian u\n  have hsub : u ≤ IsLocalRing.maximalIdeal A := IsLocalRing.le_maximalIdeal hu\n  have hle : u ≤ IsLocalRing.maximalIdeal A • u := by\n    rw [Ideal.smul_eq_mul]\n    calc u = u * u := hu₁.symm\n      _ ≤ IsLocalRing.maximalIdeal A * u := Ideal.mul_mono_left hsub\n  refine Submodule.eq_bot_of_le_smul_of_le_jacobson_bot _ u hfg hle ?_\n  exact le_of_eq (IsLocalRing.jacobson_eq_maximalIdeal ⊥ bot_ne_top).symm\n",
+    "source": {
+      "university": "University of Southern California",
+      "term": "Fall",
+      "year": "2021",
+      "problem": "Problem 4 (second part)"
+    },
+    "parent_id": "ideal_eq_bot_of_sq_eq_self",
+    "transformation_type": "alpha_rename+hypothesis_reorder"
+  },
+  {
+    "id": "022",
+    "field": "Commutative Algebra",
+    "latex_theorem": "Let $R$ be a Noetherian integral domain. Then every nonzero element of $R$ admits a factorization into irreducible elements: for every $a \\in R$ with $a \\neq 0$ there is a finite multiset of irreducible elements whose product is associated to $a$.",
+    "latex_proof": "Let $S$ be the set of principal ideals $(a)$ with $a \\neq 0$ such that $a$ admits no factorization into irreducibles. We claim $S = \\emptyset$.\n\nSuppose not. Since $R$ is Noetherian, the nonempty family $S$ of ideals has a maximal element $(a)$. The element $a$ is nonzero and admits no irreducible factorization; in particular $a$ is not a unit (a unit is the empty product) and $a$ is not irreducible (an irreducible element is a one-term product). Since $a$ is a nonzero non-unit that is not irreducible, we may write $a = bc$ with $b, c \\in R$ both non-units and both nonzero (nonzero because $R$ is a domain and $a \\neq 0$).\n\nNow $(a) \\subseteq (b)$, and the inclusion is strict: if $(a) = (b)$ then $b = ad$ for some $d$, so $a = bc = adc$, and cancelling $a \\neq 0$ in the domain $R$ gives $dc = 1$, making $c$ a unit, a contradiction. By maximality of $(a)$ in $S$ we get $(b) \\notin S$, so $b$ has a factorization $b = p_1 \\cdots p_n$ into irreducibles. Symmetrically $c = q_1 \\cdots q_m$ with each $q_j$ irreducible.\n\nThen $a = bc = p_1 \\cdots p_n q_1 \\cdots q_m$ is a factorization of $a$ into irreducibles, contradicting $(a) \\in S$.\n\nHence $S = \\emptyset$, i.e. every nonzero element of $R$ factors into irreducibles. $\\blacksquare$",
+    "lean_theorem": "theorem exists_irreducible_factors_of_noetherian_domain_l2\n    {A : Type*} [CommRing A] [IsDomain A] [IsNoetherianRing A] {u : A} (hu : u ≠ 0) :\n    ∃ f : Multiset A, (∀ b ∈ f, Irreducible b) ∧ Associated f.prod u",
+    "lean_proof": "import Mathlib\n\ntheorem exists_irreducible_factors_of_noetherian_domain_l2\n    {A : Type*} [CommRing A] [IsDomain A] [IsNoetherianRing A] {u : A} (hu : u ≠ 0) :\n    ∃ f : Multiset A, (∀ b ∈ f, Irreducible b) ∧ Associated f.prod u :=\n  WfDvdMonoid.exists_factors u hu\n",
+    "source": {
+      "university": "University of California, Los Angeles",
+      "term": null,
+      "year": null,
+      "problem": "Problem 3 (Noetherian domain factorization)"
+    },
+    "parent_id": "exists_irreducible_factors_of_noetherian_domain",
+    "transformation_type": "alpha_rename"
+  },
+  {
+    "id": "023",
+    "field": "Field Theory",
+    "latex_theorem": "Let $F$ be a finite field. Then there exist a prime $p$ and an integer $n \\ge 1$ such that $|F| = p^{n}$.",
+    "latex_proof": "Since $F$ is a finite field, its characteristic cannot be $0$ (otherwise the prime ring $\\mathbb{Z} \\cdot 1 \\subseteq F$ would be infinite), so $\\operatorname{char} F = p$ for some prime $p$; recall the characteristic of an integral domain is either $0$ or prime.\n\nThe prime subfield of $F$ is therefore $\\mathbb{F}_p = \\mathbb{Z}/p\\mathbb{Z}$, and $F$ is a vector space over $\\mathbb{F}_p$. Since $F$ is finite, this vector space is finite-dimensional; let $n = \\dim_{\\mathbb{F}_p} F$, and note $n \\ge 1$ since $F \\neq 0$.\n\nChoosing a basis $e_1,\\dots,e_n$ of $F$ over $\\mathbb{F}_p$, every element of $F$ is uniquely of the form $\\sum_{i=1}^{n} c_i e_i$ with $c_i \\in \\mathbb{F}_p$. There are exactly $p$ choices for each of the $n$ coefficients, and distinct coefficient tuples give distinct elements. Hence\n\\[ |F| = p^{n} . \\]\n$\\blacksquare$",
+    "lean_theorem": "theorem finite_field_card_eq_prime_pow_l2 (A : Type*) [Field A] [Fintype A] :\n    ∃ p n : ℕ, p.Prime ∧ 0 < n ∧ Fintype.card A = p ^ n",
+    "lean_proof": "import Mathlib\n\ntheorem finite_field_card_eq_prime_pow_l2 (A : Type*) [Field A] [Fintype A] :\n    ∃ p n : ℕ, p.Prime ∧ 0 < n ∧ Fintype.card A = p ^ n := by\n  -- `FiniteField.card'` is `∃ p, CharP K p ∧ ∃ n : ℕ+, p.Prime ∧ card K = p ^ n`,\n  -- so the char-p witness must be bound before `n`.\n  obtain ⟨p, _hchar, n, hp, hcard⟩ := FiniteField.card' A\n  exact ⟨p, (n : ℕ), hp, n.property, hcard⟩\n",
+    "source": {
+      "university": "University of California, Los Angeles",
+      "term": null,
+      "year": null,
+      "problem": "Problem (finite field cardinality)"
+    },
+    "parent_id": "finite_field_card_eq_prime_pow",
+    "transformation_type": "alpha_rename"
+  },
+  {
+    "id": "024",
+    "field": "Commutative Algebra",
+    "latex_theorem": "Let $R$ be an integral domain with fraction field $F$, and let $S \\subseteq R$ be a multiplicative subset with $0 \\notin S$. Then the canonical map from the localization $S^{-1}R$ into $F$ is injective; in particular $S^{-1}R$ embeds naturally in $F$. This applies to $S = R \\setminus \\mathfrak{m}$ for a maximal ideal $\\mathfrak{m}$, so each $R_{\\mathfrak{m}}$ embeds in $F$.",
+    "latex_proof": "Both $S^{-1}R$ and $F$ are localizations of $R$: the field $F$ is the localization at $S_0 = R \\setminus \\{0\\}$, and $S \\subseteq S_0$ since $0 \\notin S$.\n\nBy the universal property of localization, the composite $R \\to F$ sends every element of $S$ to a unit of $F$ (a nonzero element of a field), so it factors uniquely through a ring homomorphism $\\varphi : S^{-1}R \\to F$ with $\\varphi(r/s) = r/s$.\n\nWe show $\\varphi$ is injective. Suppose $\\varphi(r/s) = 0$ in $F$. Then $r/s = 0$ as an element of $F$, which by the construction of the fraction field means $r = 0$ (there is no nonzero annihilator in a domain). Hence $r/s = 0/s = 0$ in $S^{-1}R$ as well.\n\nMore carefully, in $S^{-1}R$ we have $r/s = r'/s'$ iff $t(rs' - r's) = 0$ for some $t \\in S$; since $R$ is a domain and $t \\neq 0$, this is equivalent to $rs' = r's$, which is exactly the equivalence defining $F$ restricted to denominators in $S$. So the map on equivalence classes is well defined and injective.\n\nTaking $S = R \\setminus \\mathfrak{m}$ for $\\mathfrak{m}$ a maximal ideal (which is multiplicative and omits $0$ since $0 \\in \\mathfrak{m}$) gives the embedding $R_{\\mathfrak{m}} \\hookrightarrow F$. $\\blacksquare$",
+    "lean_theorem": "theorem localization_injective_of_domain_l2 {A : Type*} [CommRing A] [IsDomain A]\n    (u : Submonoid A) (hu : (0 : A) ∉ u) :\n    Function.Injective (algebraMap A (Localization u))",
+    "lean_proof": "import Mathlib\n\ntheorem localization_injective_of_domain_l2 {A : Type*} [CommRing A] [IsDomain A]\n    (u : Submonoid A) (hu : (0 : A) ∉ u) :\n    Function.Injective (algebraMap A (Localization u)) := by\n  have hS' : u ≤ nonZeroDivisors A := by\n    intro s hs\n    rw [mem_nonZeroDivisors_iff_ne_zero]\n    rintro rfl\n    exact hu hs\n  exact IsLocalization.injective (Localization u) hS'\n",
+    "source": {
+      "university": "University of Southern California",
+      "term": "Spring",
+      "year": "2020",
+      "problem": "Problem 3(a)"
+    },
+    "parent_id": "localization_injective_of_domain",
+    "transformation_type": "alpha_rename"
+  },
+  {
+    "id": "025",
+    "field": "Field Theory",
+    "latex_theorem": "Let $G$ be a finite group acting on a field $F$ by field automorphisms, and let $F^{G}$ denote the subfield of $G$-invariant elements. Then the extension $F^{G} \\subseteq F$ is integral: every $x \\in F$ is integral over $F^{G}$.",
+    "latex_proof": "Let $x \\in F$ and consider the polynomial\n\\[ P_x(t) := \\prod_{g \\in G} \\bigl(t - g \\cdot x\\bigr) \\in F[t] . \\]\nThis is a monic polynomial of degree $|G|$.\n\n\\emph{Its coefficients are $G$-invariant.} Each $h \\in G$ acts on $F[t]$ coefficientwise, fixing $t$; this action is a ring automorphism of $F[t]$. Applying $h$ to $P_x$ permutes the factors:\n\\[ h \\cdot P_x(t) = \\prod_{g \\in G} \\bigl(t - (hg)\\cdot x\\bigr) = \\prod_{g' \\in G}\\bigl(t - g' \\cdot x\\bigr) = P_x(t) , \\]\nsince $g \\mapsto hg$ is a bijection of $G$. Hence every coefficient of $P_x$ is fixed by every $h \\in G$, i.e. lies in $F^{G}$. So $P_x \\in F^{G}[t]$ and $P_x$ is monic.\n\n\\emph{$x$ is a root.} Taking $g = 1$ in the product gives the factor $(t - x)$, so $P_x(x) = 0$.\n\nTherefore $x$ satisfies a monic polynomial with coefficients in $F^{G}$, i.e. $x$ is integral over $F^{G}$. As $x \\in F$ was arbitrary, $F^{G} \\subseteq F$ is an integral extension. $\\blacksquare$",
+    "lean_theorem": "theorem fixedPoints_isIntegral_l2 (A : Type*) [Group A] [Finite A] (A₁ : Type*) [Field A₁]\n    [MulSemiringAction A A₁] (u : A₁) : IsIntegral (FixedPoints.subfield A A₁) u",
+    "lean_proof": "import Mathlib\n\ntheorem fixedPoints_isIntegral_l2 (A : Type*) [Group A] [Finite A] (A₁ : Type*) [Field A₁]\n    [MulSemiringAction A A₁] (u : A₁) : IsIntegral (FixedPoints.subfield A A₁) u :=\n  FixedPoints.isIntegral A A₁ u\n",
+    "source": {
+      "university": "University of Oregon",
+      "term": "Fall",
+      "year": "2017",
+      "problem": "Part II, Problem 5"
+    },
+    "parent_id": "fixedPoints_isIntegral",
+    "transformation_type": "alpha_rename"
+  },
+  {
+    "id": "026",
+    "field": "Commutative Algebra",
+    "latex_theorem": "Let $R$ be a commutative ring and let $f, g \\in R$ be elements of a unique factorization domain $R$. Then $f$ and $g$ generate the same radical ideal, $\\sqrt{(f)} = \\sqrt{(g)}$, if and only if $f$ and $g$ have the same monic irreducible factors up to associates.",
+    "latex_proof": "($\\Rightarrow$) Suppose $\\sqrt{(f)} = \\sqrt{(g)}$. Then $f \\in \\sqrt{(g)}$, so $f^{N} \\in (g)$ for some $N$, i.e. $g \\mid f^{N}$. Let $p$ be an irreducible factor of $g$. Since $R$ is a UFD, irreducible elements are prime, and $p \\mid g \\mid f^{N}$ gives $p \\mid f^{N}$, hence $p \\mid f$. So every irreducible factor of $g$ is an irreducible factor of $f$. By symmetry (using $g \\in \\sqrt{(f)}$), every irreducible factor of $f$ is an irreducible factor of $g$.\n\n($\\Leftarrow$) Suppose $f$ and $g$ have the same irreducible factors $p_1,\\dots,p_k$ up to associates, so\n\\[ f = u\\, p_1^{e_1}\\cdots p_k^{e_k}, \\qquad g = v\\, p_1^{d_1}\\cdots p_k^{d_k} \\]\nwith $u, v$ units and $e_i, d_i \\ge 1$. Choose $M$ with $e_i M \\ge d_i$ for all $i$; then $g \\mid f^{M}$, so $f \\in \\sqrt{(g)}$ and hence $\\sqrt{(f)} \\subseteq \\sqrt{(g)}$ (radicals are the smallest radical ideals containing the generators). Symmetrically $\\sqrt{(g)} \\subseteq \\sqrt{(f)}$.\n\nHence $\\sqrt{(f)} = \\sqrt{(g)}$.\n\n(Over an algebraically closed field $k$ and $R = k[x_1,\\dots,x_n]$, the Nullstellensatz turns the left-hand condition into the geometric statement that $f$ and $g$ have the same zero set: $f(a) = 0 \\iff g(a) = 0$ for all $a \\in k^{n}$.) $\\blacksquare$",
+    "lean_theorem": "theorem radical_span_singleton_eq_iff_dvd_pow_l2 {A : Type*} [CommRing A] (u u₁ : A) :\n    Ideal.radical (Ideal.span {u}) = Ideal.radical (Ideal.span {u₁}) ↔\n      ((∃ M : ℕ, u₁ ∣ u ^ M) ∧ (∃ N : ℕ, u ∣ u₁ ^ N))",
+    "lean_proof": "import Mathlib\n\ntheorem radical_span_singleton_eq_iff_dvd_pow_l2 {A : Type*} [CommRing A] (u u₁ : A) :\n    Ideal.radical (Ideal.span {u}) = Ideal.radical (Ideal.span {u₁}) ↔\n      ((∃ M : ℕ, u₁ ∣ u ^ M) ∧ (∃ N : ℕ, u ∣ u₁ ^ N)) := by\n  constructor\n  · intro h\n    constructor\n    · have hf : u ∈ Ideal.radical (Ideal.span {u₁}) := by\n        rw [← h]\n        exact Ideal.le_radical (Ideal.mem_span_singleton_self u)\n      obtain ⟨M, hM⟩ := hf\n      exact ⟨M, Ideal.mem_span_singleton.mp hM⟩\n    · have hg : u₁ ∈ Ideal.radical (Ideal.span {u}) := by\n        rw [h]\n        exact Ideal.le_radical (Ideal.mem_span_singleton_self u₁)\n      obtain ⟨N, hN⟩ := hg\n      exact ⟨N, Ideal.mem_span_singleton.mp hN⟩\n  · rintro ⟨⟨M, hM⟩, ⟨N, hN⟩⟩\n    apply le_antisymm\n    · apply Ideal.radical_le_radical_iff.mpr\n      rw [Ideal.span_le, Set.singleton_subset_iff]\n      exact ⟨M, Ideal.mem_span_singleton.mpr hM⟩\n    · apply Ideal.radical_le_radical_iff.mpr\n      rw [Ideal.span_le, Set.singleton_subset_iff]\n      exact ⟨N, Ideal.mem_span_singleton.mpr hN⟩\n",
+    "source": {
+      "university": "University of Southern California",
+      "term": "Spring",
+      "year": "2020",
+      "problem": "Problem 5"
+    },
+    "parent_id": "radical_span_singleton_eq_iff_dvd_pow",
+    "transformation_type": "alpha_rename"
+  },
+  {
+    "id": "027",
+    "field": "Module Theory",
+    "latex_theorem": "Let $R$ be a principal ideal domain and let $M$ be a finitely generated torsion-free $R$-module. Then $M$ is free. Consequently a finitely generated projective module over a principal ideal domain is free, since a projective module embeds into a free module and is therefore torsion-free.",
+    "latex_proof": "We argue by induction on the number of generators, using the structure of $R$ as a PID.\n\nIf $M = 0$ it is free of rank $0$. Otherwise, let $x_1,\\dots,x_n$ generate $M$ and let $r$ be the maximal size of an $R$-linearly independent subset of $\\{x_1,\\dots,x_n\\}$; after reordering, say $x_1,\\dots,x_r$ are independent. Put $N = Rx_1 + \\cdots + Rx_r$, which is free of rank $r$.\n\nFor each $j > r$ the set $\\{x_1,\\dots,x_r,x_j\\}$ is dependent, so there is $a_j \\in R \\setminus \\{0\\}$ with $a_j x_j \\in N$. Let $a = a_{r+1}\\cdots a_n \\neq 0$ (nonzero since $R$ is a domain). Then $aM \\subseteq N$.\n\nSince $M$ is torsion-free, multiplication by $a$ is an injective $R$-module map $M \\to aM$, so $M \\cong aM$. Now $aM$ is a submodule of the free module $N$ of rank $r$ over the PID $R$, and a submodule of a finitely generated free module over a PID is free. Hence $aM$ is free, and therefore $M$ is free.\n\nFor the consequence: if $M$ is projective then $M$ is a direct summand of a free module $F$, so $M$ embeds in $F$. A free module over a domain is torsion-free, and torsion-freeness is inherited by submodules, so $M$ is torsion-free; by the first part $M$ is free. $\\blacksquare$",
+    "lean_theorem": "theorem free_of_finite_torsionFree_over_pid_l2 {A A₁ : Type*} [CommRing A] [IsDomain A]\n    [IsPrincipalIdealRing A] [AddCommGroup A₁] [Module A A₁] [Module.Finite A A₁]\n    [NoZeroSMulDivisors A A₁] : Module.Free A A₁",
+    "lean_proof": "import Mathlib\n\ntheorem free_of_finite_torsionFree_over_pid_l2 {A A₁ : Type*} [CommRing A] [IsDomain A]\n    [IsPrincipalIdealRing A] [AddCommGroup A₁] [Module A A₁] [Module.Finite A A₁]\n    [NoZeroSMulDivisors A A₁] : Module.Free A A₁ :=\n  Module.free_of_finite_type_torsion_free'\n",
+    "source": {
+      "university": "University of Southern California",
+      "term": "Fall",
+      "year": "2020",
+      "problem": "Problem 5"
+    },
+    "parent_id": "free_of_finite_torsionFree_over_pid",
+    "transformation_type": "alpha_rename"
+  },
+  {
+    "id": "028",
+    "field": "Group Theory",
+    "latex_theorem": "Let $G$ be a finite group acting transitively on a finite set $X$ with $|X| > 1$. Then there exists $g \\in G$ acting without fixed points, i.e. $g \\cdot x \\neq x$ for every $x \\in X$.",
+    "latex_proof": "By Burnside's lemma (the orbit-counting theorem),\n\\[ \\#(X/G) = \\frac{1}{|G|}\\sum_{g \\in G} |X^{g}| , \\]\nwhere $X^{g} = \\{x \\in X : g\\cdot x = x\\}$ is the fixed-point set of $g$.\n\nSince the action is transitive and $X$ is nonempty, there is exactly one orbit, so $\\#(X/G) = 1$, i.e.\n\\[ \\sum_{g \\in G} |X^{g}| = |G| . \\]\n\nSuppose for contradiction that every $g \\in G$ has at least one fixed point, i.e. $|X^{g}| \\ge 1$ for all $g$. The identity contributes $|X^{1}| = |X| > 1$. Splitting off the identity,\n\\[ \\sum_{g \\in G} |X^{g}| = |X| + \\sum_{g \\neq 1} |X^{g}| \\ge |X| + (|G| - 1) > 1 + (|G| - 1) = |G| , \\]\nusing $|X| > 1$. This contradicts $\\sum_{g} |X^{g}| = |G|$.\n\nHence some $g \\in G$ satisfies $|X^{g}| = 0$, i.e. $g$ acts without fixed points. $\\blacksquare$",
+    "lean_theorem": "theorem exists_fixedPointFree_of_pretransitive_l2 {A A₁ : Type*} [Group A] [Finite A]\n    [MulAction A A₁] [Fintype A₁] [MulAction.IsPretransitive A A₁] [Nonempty A₁]\n    (hu : 1 < Fintype.card A₁) : ∃ g : A, ∀ x : A₁, g • x ≠ x",
+    "lean_proof": "import Mathlib\n\nopen MulAction Finset\n\ntheorem exists_fixedPointFree_of_pretransitive_l2 {A A₁ : Type*} [Group A] [Finite A]\n    [MulAction A A₁] [Fintype A₁] [MulAction.IsPretransitive A A₁] [Nonempty A₁]\n    (hu : 1 < Fintype.card A₁) : ∃ g : A, ∀ x : A₁, g • x ≠ x := by\n  classical\n  haveI : Fintype A := Fintype.ofFinite A\n  by_contra hcon\n  push Not at hcon\n  -- every g fixes some point, so every fixedBy set is nonempty\n  have hpos : ∀ g : A, 1 ≤ Fintype.card (fixedBy A₁ g) := by\n    intro g\n    obtain ⟨x, hx⟩ := hcon g\n    exact Fintype.card_pos_iff.mpr ⟨⟨x, hx⟩⟩\n  -- Burnside: the sum of fixed points equals (number of orbits) * |G| = |G|\n  have hburn : ∑ g : A, Fintype.card (fixedBy A₁ g)\n      = Fintype.card (orbitRel.Quotient A A₁) * Fintype.card A :=\n    sum_card_fixedBy_eq_card_orbits_mul_card_group A A₁\n  have horb : Fintype.card (orbitRel.Quotient A A₁) = 1 := by\n    rw [Fintype.card_eq_one_iff]\n    obtain ⟨x⟩ := ‹Nonempty A₁›\n    refine ⟨Quotient.mk'' x, ?_⟩\n    intro y\n    induction y using Quotient.inductionOn' with\n    -- `orbitRel` is `r a b := a ∈ orbit G b`, i.e. `z ≈ x ↔ ∃ g, g • x = z`,\n    -- so the arguments run x-then-z, not z-then-x.\n    | h z => exact Quotient.sound' (MulAction.exists_smul_eq A x z)\n  rw [horb, one_mul] at hburn\n  -- but the identity alone contributes card X > 1, and every other term is ≥ 1\n  have hid : Fintype.card (fixedBy A₁ (1 : A)) = Fintype.card A₁ := by\n    simp [fixedBy]\n  have hlt : Fintype.card A < ∑ g : A, Fintype.card (fixedBy A₁ g) := by\n    calc Fintype.card A\n        = ∑ _g : A, 1 := by simp\n      _ < ∑ g : A, Fintype.card (fixedBy A₁ g) := by\n          refine Finset.sum_lt_sum (fun g _ => hpos g) ⟨1, Finset.mem_univ 1, ?_⟩\n          rw [hid]\n          exact hu\n  omega\n",
+    "source": {
+      "university": "University of Southern California",
+      "term": "Spring",
+      "year": "2020",
+      "problem": "Problem 2(a)"
+    },
+    "parent_id": "exists_fixedPointFree_of_pretransitive",
+    "transformation_type": "alpha_rename"
+  },
+  {
+    "id": "029",
+    "field": "Module Theory",
+    "latex_theorem": "Let $R$ be a commutative ring and let $r_1,\\dots,r_n \\in R$ generate the unit ideal, i.e. $(r_1,\\dots,r_n) = R$. Let $f : R^{n} \\to R$ be the $R$-linear map $f(a_1,\\dots,a_n) = \\sum_{i} a_i r_i$. Then $f$ is surjective and $\\ker f$ is a projective $R$-module.",
+    "latex_proof": "\\emph{Surjectivity.} Since $(r_1,\\dots,r_n) = R$, we have $1 \\in (r_1,\\dots,r_n)$, so there are $c_1,\\dots,c_n \\in R$ with $\\sum_i c_i r_i = 1$. Given $x \\in R$, take $a_i = x c_i$; then $f(a) = \\sum_i x c_i r_i = x \\sum_i c_i r_i = x$. So $f$ is onto.\n\n\\emph{The kernel is projective.} We have a short exact sequence of $R$-modules\n\\[ 0 \\longrightarrow \\ker f \\longrightarrow R^{n} \\xrightarrow{\\ f\\ } R \\longrightarrow 0 . \\]\nThe module $R$ is free, hence projective, so this sequence splits: there is $s : R \\to R^{n}$ with $f \\circ s = \\mathrm{id}_R$. Concretely one may take $s(x) = (xc_1,\\dots,xc_n)$, and indeed $f(s(x)) = x$ by the computation above.\n\nGiven the splitting, $R^{n} = \\ker f \\oplus s(R)$: every $v \\in R^{n}$ decomposes as $v = (v - s(f(v))) + s(f(v))$, where the first summand lies in $\\ker f$ because $f(v - s(f(v))) = f(v) - f(v) = 0$; and if $v \\in \\ker f \\cap s(R)$, say $v = s(x)$, then $0 = f(v) = f(s(x)) = x$, so $v = s(0) = 0$.\n\nThus $\\ker f$ is a direct summand of the free module $R^{n}$, and a direct summand of a free module is projective. $\\blacksquare$",
+    "lean_theorem": "theorem ker_projective_of_span_eq_top_l2 {A : Type*} [CommRing A] {u : ℕ} (u₁ : Fin u → A)\n    (hu : Ideal.span (Set.range u₁) = ⊤) :\n    Function.Surjective (Fintype.linearCombination A u₁) ∧\n      Module.Projective A (LinearMap.ker (Fintype.linearCombination A u₁))",
+    "lean_proof": "import Mathlib\n\ntheorem ker_projective_of_span_eq_top_l2 {A : Type*} [CommRing A] {u : ℕ} (u₁ : Fin u → A)\n    (hu : Ideal.span (Set.range u₁) = ⊤) :\n    Function.Surjective (Fintype.linearCombination A u₁) ∧\n      Module.Projective A (LinearMap.ker (Fintype.linearCombination A u₁)) := by\n  classical\n  set f := Fintype.linearCombination A u₁ with hf\n  -- extract a partition of unity\n  have h1 : (1 : A) ∈ Ideal.span (Set.range u₁) := by rw [hu]; trivial\n  rw [Ideal.mem_span_range_iff_exists_fun] at h1\n  obtain ⟨c, hc⟩ := h1\n  -- the splitting\n  let s : A →ₗ[A] (Fin u → A) :=\n    { toFun := fun x i => x * c i\n      -- after `funext i` the RHS is still `(g + h) i`; `Pi.add_apply` is what\n      -- lets `ring` see `x * c i + y * c i`.\n      map_add' := by intro x y; funext i; simp only [Pi.add_apply]; ring\n      map_smul' := by intro a x; funext i; simp [smul_eq_mul]; ring }\n  have hfs : ∀ x : A, f (s x) = x := by\n    intro x\n    simp only [hf, s, Fintype.linearCombination_apply, LinearMap.coe_mk, AddHom.coe_mk,\n      smul_eq_mul]\n    calc ∑ i, x * c i * u₁ i = x * ∑ i, c i * u₁ i := by\n          rw [Finset.mul_sum]; exact Finset.sum_congr rfl (fun i _ => by ring)\n      _ = x := by rw [hc]; ring\n  have hsurj : Function.Surjective f := fun x => ⟨s x, hfs x⟩\n  refine ⟨hsurj, ?_⟩\n  -- ker f is a direct summand of the free module (Fin n → R)\n  let p : (Fin u → A) →ₗ[A] (Fin u → A) := LinearMap.id - s.comp f\n  have hp : ∀ v, p v ∈ LinearMap.ker f := by\n    intro v\n    simp only [p, LinearMap.sub_apply, LinearMap.id_apply, LinearMap.comp_apply,\n      LinearMap.mem_ker, map_sub, hfs]\n    ring\n  let q : (Fin u → A) →ₗ[A] LinearMap.ker f := p.codRestrict (LinearMap.ker f) hp\n  refine Module.Projective.of_split (LinearMap.ker f).subtype q ?_\n  ext w\n  have hw : f w.1 = 0 := w.2\n  simp [q, p, hw]\n",
+    "source": {
+      "university": "University of Southern California",
+      "term": "Fall",
+      "year": "2022",
+      "problem": "Problem 2"
+    },
+    "parent_id": "ker_projective_of_span_eq_top",
+    "transformation_type": "alpha_rename"
+  },
+  {
+    "id": "030",
+    "field": "Ring Theory",
+    "latex_theorem": "Let $R$ be a commutative ring and let $M$ be a finitely generated $R$-module. If $f : M \\to M$ is a surjective $R$-module homomorphism, then $f$ is injective, hence an isomorphism.",
+    "latex_proof": "View $M$ as a module over the polynomial ring $A = R[t]$, where $t$ acts on $M$ as $f$. This is well defined because $f$ is $R$-linear.\n\nLet $\\mathfrak{a} = (t) \\subseteq A$ be the ideal generated by $t$. Since $f$ is surjective, $tM = f(M) = M$, i.e. $\\mathfrak{a}M = M$.\n\nThe module $M$ is finitely generated over $R$, hence also over $A$. By the Cayley–Hamilton form of Nakayama's lemma, since $\\mathfrak{a}M = M$ and $M$ is finitely generated over $A$, there exists $a \\in \\mathfrak{a}$ with $(1 + a)M = 0$. Write $a = t\\,g(t)$ for some $g \\in A$.\n\nThen for every $x \\in M$,\n\\[ 0 = (1 + t\\,g(t))\\cdot x = x + g(f)\\bigl(f(x)\\bigr) , \\]\ni.e. $x = -\\,g(f)(f(x))$.\n\nNow suppose $f(x) = 0$. Substituting into the displayed identity gives $x = -g(f)(0) = 0$. Hence $\\ker f = 0$ and $f$ is injective.\n\nBeing bijective and $R$-linear, $f$ is an isomorphism of $R$-modules. $\\blacksquare$",
+    "lean_theorem": "theorem injective_of_surjective_endomorphism_of_finite_l2\n    {A A₁ : Type*} [CommRing A] [AddCommGroup A₁] [Module A A₁] [Module.Finite A A₁]\n    (u : A₁ →ₗ[A] A₁) (hu : Function.Surjective u) : Function.Injective u",
+    "lean_proof": "import Mathlib\n\ntheorem injective_of_surjective_endomorphism_of_finite_l2\n    {A A₁ : Type*} [CommRing A] [AddCommGroup A₁] [Module A A₁] [Module.Finite A A₁]\n    (u : A₁ →ₗ[A] A₁) (hu : Function.Surjective u) : Function.Injective u :=\n  -- `[CommRing R]` supplies `OrzechProperty R` via the instance in\n  -- Mathlib/RingTheory/FiniteType.lean:635.\n  OrzechProperty.injective_of_surjective_endomorphism u hu\n",
+    "source": {
+      "university": "University of California, Los Angeles",
+      "term": null,
+      "year": null,
+      "problem": "Problem (f.g. module, surjective endomorphism)"
+    },
+    "parent_id": "injective_of_surjective_endomorphism_of_finite",
+    "transformation_type": "alpha_rename"
+  }
+]
