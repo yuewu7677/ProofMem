@@ -61,6 +61,11 @@ DEFAULT_OUT = ROOT / "runs"
 # Data loading
 # ---------------------------------------------------------------------------
 
+def _get_formal_statement(entry: dict[str, Any]) -> str:
+    """Get formal statement from entry, handling both field naming conventions."""
+    return entry.get("formal_statement") or entry.get("S_Lean", "")
+
+
 def load_jsonl(path: Path) -> list[dict[str, Any]]:
     records = []
     with path.open(encoding="utf-8") as f:
@@ -72,10 +77,10 @@ def load_jsonl(path: Path) -> list[dict[str, Any]]:
 
 
 def load_gold_proofs(path: Path) -> dict[str, str]:
-    """Build id -> full formal_statement map from DATA_2."""
+    """Build id -> full formal_statement map from DATA_2 or DATA_gold."""
     gold = {}
     for e in load_jsonl(path):
-        gold[e["id"]] = e["formal_statement"]
+        gold[e["id"]] = e.get("formal_statement") or e.get("P_Lean_gold", "")
     return gold
 
 
@@ -123,10 +128,13 @@ def extract_gold_proof(gold_fs: str) -> str | None:
     # Tactic proof: `:= by\n...`
     m = re.search(r":=\s*by\s*\n(.*)", gold_fs, re.DOTALL)
     if m:
-        return "by\n" + m.group(1)
+        proof = "by\n" + m.group(1)
+        if re.search(r"\b(?:sorry|admit)\b", proof):
+            return None
+        return proof
     # Term-style proof: `:= term`
     m = re.search(r":=\s*\n?\s*(.+?)$", gold_fs, re.DOTALL)
-    if m and "sorry" not in m.group(1):
+    if m and not re.search(r"\b(?:sorry|admit)\b", m.group(1)):
         return m.group(1).strip()
     return None
 
@@ -143,11 +151,11 @@ def build_prompt(
 
     If restricted_imports is provided, show only those imports.
     """
-    header = entry["formal_statement"]
+    header = _get_formal_statement(entry)
     header = re.sub(r":=\s*by\s*\n\s*sorry\s*$", "", header.strip()).rstrip()
 
     domain = entry.get("domain", "Unknown")
-    informal = entry.get("informal_statement", "")
+    informal = entry.get("informal_statement") or entry.get("P_NL_gold", "")
 
     if restricted_imports is not None:
         import_block = "\n".join(f"import {imp}" for imp in sorted(restricted_imports))
@@ -220,6 +228,14 @@ def _find_elan_bin() -> str:
     return os.path.expanduser("~/.elan/bin")
 
 
+def _find_lake() -> str:
+    """Return full path to lake executable."""
+    lake = os.path.join(_find_elan_bin(), "lake")
+    if os.name == "nt":
+        lake += ".exe"
+    return lake
+
+
 def _extract_header(fs: str) -> str:
     """Extract theorem/lemma statement from formal_statement (without proof)."""
     # Find `:= by\n  sorry` and strip it
@@ -256,7 +272,7 @@ def _collect_imports(entries: list[dict[str, Any]]) -> tuple[list[str], list[str
                 seen_open.add(s)
 
     for entry in entries:
-        _add_lines(entry["formal_statement"])
+        _add_lines(_get_formal_statement(entry))
         # Also check the imports field (FormalMATH-L3 convention)
         if entry.get("imports"):
             _add_lines(entry["imports"])
@@ -284,7 +300,7 @@ def _build_batch_file(
         parts.append("")
 
     for entry, proof, eval_name in eval_items:
-        header = _extract_header(entry["formal_statement"])
+        header = _extract_header(_get_formal_statement(entry))
         # Rename theorem to unique eval_name
         header = re.sub(
             r"^(\s*(?:theorem|lemma)\s+)(\S+)",
@@ -359,11 +375,12 @@ def verify_batch(
         tmp.write(lean_content)
     try:
         elan_bin = _find_elan_bin()
+        lake_exe = _find_lake()
         env = os.environ.copy()
         env["PATH"] = elan_bin + os.pathsep + env.get("PATH", "")
 
         result = subprocess.run(
-            ["lake", "env", "lean", str(tmp_path)],
+            [lake_exe, "env", "lean", str(tmp_path)],
             cwd=str(ROOT),
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
