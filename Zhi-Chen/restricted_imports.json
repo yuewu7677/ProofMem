@@ -106,11 +106,10 @@
     "Mathlib.Topology.MetricSpace.Basic"
   ],
   "ma-proofbench-0011": [
-    "Mathlib.MeasureTheory.Constructions.Prod",
     "Mathlib.MeasureTheory.MeasurableSpace.Basic",
     "Mathlib.MeasureTheory.Measure.Basic",
-    "Mathlib.MeasureTheory.Measure.SigmaFinite",
-    "Mathlib.Topology.Basic"
+    "Mathlib.MeasureTheory.Measure.Prod",
+    "Mathlib.MeasureTheory.Measure.SigmaFinite"
   ],
   "ma-proofbench-0012": [
     "Mathlib.Algebra.Order.Star.Basic",
